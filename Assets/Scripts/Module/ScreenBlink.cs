@@ -9,7 +9,8 @@ public class ScreenBlink : MonoBehaviour
     void Start()
     {
         Image self = GetComponent<Image>();
-        self.DOFade(0,0.5f).OnComplete(()=>{
+        self.DOFade(0, 0.5f).OnComplete(() =>
+        {
             Destroy(gameObject, 1.0f);
         });
     }

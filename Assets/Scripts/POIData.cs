@@ -13,29 +13,50 @@ public class POIData : MonoBehaviour
     public string nowPictureName;
     public Sprite oldPicture;
     public Sprite nowPicture;
-    public Sprite ColorMarker; 
+    public Sprite ColorMarker;
     [TextArea(5,20)] public string description;
 
-    
+    OnlineMapsMarker3D dynamicMarker;
+    int defaultZoom = 18;
+
     void Start()
     {
-        OnlineMaps map = OnlineMaps.instance;
+        defaultZoom = OnlineMaps.instance.zoom;
 
         // Add OnClick events to dynamic markers
-        OnlineMapsMarker3D dynamicMarker = OnlineMapsMarker3DManager.CreateItem(Longitude_User, Latitude_User, POIManager.instance.POI_Prefab);
-        //dynamicMarker.OnClick += OnMarkerClick;
-        dynamicMarker.label = POI_Name;
+        dynamicMarker = OnlineMapsMarker3DManager.CreateItem(Longitude_User, Latitude_User, POIManager.instance.POI_Prefab);
         dynamicMarker.instance.name = string.Format("Marker_{0}", POI_Name);
+        //dynamicMarker.OnClick += OnMarkerClick;
+        //dynamicMarker.label = POI_Name;
         //dynamicMarker.SetDraggable();
+        SpriteRenderer render = dynamicMarker.instance.GetComponentInChildren<SpriteRenderer>();
+        render.sprite = ColorMarker == null ? render.sprite : ColorMarker;
 
         POIMarker markerPOI = dynamicMarker.instance.AddComponent<POIMarker>();
         markerPOI.data = this;
         markerPOI.OnClickPOI += OnMarkerClick;
+
+        //Subscribe to zoom change
+        OnlineMaps.instance.OnChangeZoom += OnChangeZoom;
     }
 
     private void OnMarkerClick(POIMarker markerPOI)
     {
         InfoBoxLayout.instance.OpenInfoBoxWithPOI(this);
+    }
+
+    private void OnChangeZoom()
+    {
+        //Example of scaling object
+        //int zoom = OnlineMaps.instance.zoom;
+
+        //float s = 10f / (2 << (zoom - 5));
+
+        float originalScale = 1 << defaultZoom;
+        float currentScale = 1 << OnlineMaps.instance.zoom;
+
+        ZoomHelper helper = dynamicMarker.instance.GetComponent<ZoomHelper>();
+        helper.SetGizmoRange(currentScale / originalScale);
     }
 
     private void OnValidate() {

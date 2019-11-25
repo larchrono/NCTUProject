@@ -11,6 +11,7 @@ public class POIManager : SoraLib.SingletonMono<POIManager>
     public double defaultMapLat = 24.788465;
     public double defaultMapLon = 120.999091;
     public GameObject POI_Prefab;
+    public GameObject SLAM_Prefab;
     [Space(40)] public TextAsset csvFile;
 
     [Button]

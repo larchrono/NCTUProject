@@ -14,7 +14,7 @@ public class InfoBoxLayout : CanvasGroupExtend
     public Text GoadRange;
     public Button Go3D;
     public Button Open3D;
-    //public NavingLayout PanelNaving;
+    public Text AlertMessage;
     
     //Content Layout
     public ContentHeightController contentHeightController;
@@ -22,7 +22,11 @@ public class InfoBoxLayout : CanvasGroupExtend
     public Text ContentText;
     public POIData currentData;
 
+    //Public Parameter
+    public float MinimunDistanceForLook = 20;
+
     OnlineMapsLocationService locationService;
+    float distanceBetweenPOI = 0;
 
     void Awake(){
         if(instance == null)
@@ -46,7 +50,25 @@ public class InfoBoxLayout : CanvasGroupExtend
     }
 
     void OnOpenAR(){
-        
+        StartCoroutine(CheckAR3D());
+    }
+
+    IEnumerator CheckAR3D(){
+        yield return null;
+
+        #if UNITY_IOS
+        yield return Application.RequestUserAuthorization(UserAuthorization.WebCam);
+        if (!Application.HasUserAuthorization(UserAuthorization.WebCam))
+        {
+            UIManager.instance.WarningCamera.gameObject.SetActive(true);
+            while(true){
+                yield return new WaitForSeconds(5);
+            }
+        }
+        #endif
+
+        UIManager.instance.AR3DPanel.SetupOldPictureSLAM(currentData.oldPicture);
+        UIManager.instance.AR3DPanel.gameObject.SetActive(true);
     }
 
     public void OpenInfoBoxWithPOI(POIData data){
@@ -59,6 +81,11 @@ public class InfoBoxLayout : CanvasGroupExtend
 
         if(locationService != null)
             OnDistanceChange(locationService.position);
+        
+        if(distanceBetweenPOI < MinimunDistanceForLook)
+            AlertMessage.gameObject.SetActive(false);
+        else
+            AlertMessage.gameObject.SetActive(true);
 
         contentHeightController.ResizeContent();
 
@@ -73,8 +100,8 @@ public class InfoBoxLayout : CanvasGroupExtend
         Vector2 userCoordinares = userPoint;
 
         // Calculate the distance in km between locations.
-        float distance = OnlineMapsUtils.DistanceBetweenPoints(userCoordinares, markerCoordinates).magnitude * 1000;
+        distanceBetweenPOI = OnlineMapsUtils.DistanceBetweenPoints(userCoordinares, markerCoordinates).magnitude * 1000;
 
-        GoadRange.text = "距離 " + distance.ToString("#.#") + " m";
+        GoadRange.text = "距離 " + distanceBetweenPOI.ToString("#.#") + " m";
     }
 }
