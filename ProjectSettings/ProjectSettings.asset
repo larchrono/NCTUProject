@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: ArtPower
-  productName: NCTUAR
+  productName: "\u4EA4\u5927123"
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.9607844, g: 0.9607844, b: 0.9607844, a: 1}
@@ -163,7 +163,7 @@ PlayerSettings:
     Android: com.ArtPower.NCTUAR
     iOS: com.Artpower.NCTU123
   buildNumber: {}
-  AndroidBundleVersionCode: 12
+  AndroidBundleVersionCode: 14
   AndroidMinSdkVersion: 16
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
@@ -424,8 +424,8 @@ PlayerSettings:
   enableInternalProfiler: 0
   logObjCUncaughtExceptions: 1
   enableCrashReportAPI: 0
-  cameraUsageDescription: 
-  locationUsageDescription: 
+  cameraUsageDescription: "\u8ACB\u555F\u7528\u76F8\u6A5F\u4F86\u4F7F\u7528AR\u76F8\u95DC\u529F\u80FD"
+  locationUsageDescription: "\u8ACB\u555F\u7528\u5B9A\u4F4D\u8CC7\u8A0A\u4F86\u4F7F\u7528AR\u5C0E\u89BD"
   microphoneUsageDescription: 
   switchNetLibKey: 
   switchSocketMemoryPoolSize: 6144
@@ -642,6 +642,7 @@ PlayerSettings:
   webGLLinkerTarget: 1
   webGLThreadsSupport: 0
   scriptingDefineSymbols:
+    4: ODIN_INSPECTOR
     7: ODIN_INSPECTOR
   platformArchitecture: {}
   scriptingBackend:
