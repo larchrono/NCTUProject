@@ -23,6 +23,9 @@ public class InfoPlistManager : MonoBehaviour
         PlistElementDict rootDict = plist.root;
         rootDict.SetString("NSPhotoLibraryUsageDescription", "請啟用設定來開啟拍照功能");
 	    rootDict.SetString("NSPhotoLibraryAddUsageDescription", "請啟用設定來開啟拍照功能");
+        rootDict.SetString("NSLocationAlwaysAndWhenInUseUsageDescription", "請啟用定位資訊來使用AR導覽");
+        rootDict.SetString("NSLocationWhenInUseUsageDescription", "請啟用定位資訊來使用AR導覽");
+        rootDict.SetString("NSCameraUsageDescription", "請啟用相機來使用AR相關功能");
         
         var rootDicVal = rootDict.values;
         rootDicVal.Remove("UIApplicationExitsOnSuspend");
