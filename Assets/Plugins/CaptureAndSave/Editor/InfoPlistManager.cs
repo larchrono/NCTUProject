@@ -21,11 +21,11 @@ public class InfoPlistManager : MonoBehaviour
 
         // Update value
         PlistElementDict rootDict = plist.root;
-        rootDict.SetString("NSPhotoLibraryUsageDescription", "將用於拍照存檔功能");
-	    rootDict.SetString("NSPhotoLibraryAddUsageDescription", "將用於拍照存檔功能");
-        rootDict.SetString("NSLocationAlwaysAndWhenInUseUsageDescription", "將用於地圖定位，可引導您至AR觀看點");
-        rootDict.SetString("NSLocationWhenInUseUsageDescription", "將用於地圖定位，可引導您至AR觀看點");
-        rootDict.SetString("NSCameraUsageDescription", "必須啟用相機才能觀看擴增實境(AR)內容");
+        rootDict.SetString("NSPhotoLibraryUsageDescription", "開啟後，此APP可以將目前的畫面保存到你的相簿之中");
+	    rootDict.SetString("NSPhotoLibraryAddUsageDescription", "開啟後，此APP可以將目前的畫面保存到你的相簿之中");
+        rootDict.SetString("NSLocationAlwaysAndWhenInUseUsageDescription", "開啟後，APP中的地圖將定位您的位置，並引導您至此APP中的AR觀看點");
+        rootDict.SetString("NSLocationWhenInUseUsageDescription", "開啟後，APP中的地圖將定位您的位置，並引導您至此APP中的AR觀看點");
+        rootDict.SetString("NSCameraUsageDescription", "開啟後，您才能於APP中使用相機來觀看擴增實境(AR)內容");
         
         var rootDicVal = rootDict.values;
         rootDicVal.Remove("UIApplicationExitsOnSuspend");
