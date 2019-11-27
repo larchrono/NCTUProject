@@ -21,7 +21,29 @@ public class DemoSceneHelp : MonoBehaviour {
     }
 
     public void OnBackHandler() {
-        Application.LoadLevel("AllDemo");
+        Application.LoadLevel("Main");
+    }
+
+    public void ToSlam(){
+        GetComponent<VoidARBehaviour>().markerType = VoidARBase.EMarkerType.Markerless;
+        GetComponent<VoidARBehaviour>().ReAwake();
+    }
+
+    public void ToIMG(){
+        GetComponent<VoidARBehaviour>().markerType = VoidARBase.EMarkerType.Image;
+        GetComponent<VoidARBehaviour>().ReAwake();
+    }
+
+    public void SLAM(){
+        VoidAR.GetInstance().startMarkerlessTracking();
+    }
+
+    public void EnableAR(){
+        GetComponent<VoidARBehaviour>().EnableAR(true);
+    }
+
+    public void DisableAR(){
+        GetComponent<VoidARBehaviour>().EnableAR(false);
     }
 
     void OnGUI()

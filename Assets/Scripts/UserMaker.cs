@@ -8,6 +8,7 @@ public class UserMaker : MonoBehaviour
     public GameObject prefab;
 
     private OnlineMapsMarker3D locationMarker;
+    private Transform markerSprite;
 
     private Vector2 newPosition;
     private float newCompass;
@@ -42,6 +43,7 @@ public class UserMaker : MonoBehaviour
 
         locationMarker.scale = scaleSize;
         locationMarker.instance.name = "Player";
+        markerSprite = locationMarker.instance.transform.GetChild(0);
 
         // Gets Location Service Component.
         OnlineMapsLocationService ls = OnlineMapsLocationService.instance;
@@ -79,6 +81,8 @@ public class UserMaker : MonoBehaviour
         float currentScale = 1 << OnlineMaps.instance.zoom;
 
         locationMarker.scale = currentScale / originalScale;
+        
+        OnlineMapsLocationService.instance.StartCoroutine(DelayScale());
     }
 
     private void OnCompassChanged(float f)
@@ -102,5 +106,11 @@ public class UserMaker : MonoBehaviour
 
         //If the marker is hidden, show it
         if (!locationMarker.enabled) locationMarker.enabled = true;
+    }
+
+    IEnumerator DelayScale(){
+        yield return null;
+        yield return null;
+        markerSprite.localScale = Vector3.one / locationMarker.instance.transform.localScale.x;
     }
 }

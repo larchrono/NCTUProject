@@ -29,6 +29,8 @@ public class VoidARBehaviourEditor : Editor
     {
         VoidARBehaviour obj = target as VoidARBehaviour;
 
+        obj.isReady = EditorGUILayout.Toggle("Is Ready", obj.isReady);
+
         string[] markerTypes = {"Image" , "Markerless", "ImageExtension"};
 		string[] TrackNum = { "1", "2" , "3", "4", "5" };
         obj.markerType = (VoidARBehaviour.EMarkerType)EditorGUILayout.Popup("MarkerType", (int)(obj.markerType), markerTypes );

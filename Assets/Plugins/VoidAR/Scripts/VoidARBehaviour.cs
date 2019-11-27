@@ -5,8 +5,13 @@ using System.Collections;
 
 public class VoidARBehaviour : VoidARBase
 {
+    public bool isReady;
+    
     protected override void Awake()
     {
+        if(!isReady)
+            return;
+
         //自定义对焦：CameraFocusMode的值为-1时，为infinity模式，关闭对焦，值为2时为continuous-video模式，持续对焦；
         //设置后将修改SDK内部自动默认值
         //CameraFocusMode = -1;
@@ -36,5 +41,23 @@ public class VoidARBehaviour : VoidARBase
              //全部成功后回调
         });*/
 #endif
+    }
+
+    public void StartAR(VoidARBase.EMarkerType type, Action callback){
+        isReady = true;
+        markerType = type;
+        EnableAR(false);
+        StartCoroutine(DoReawake(callback));
+    }
+
+    IEnumerator DoReawake(Action callback){
+        yield return null;
+        yield return new WaitForSeconds(0.1f);
+        Awake();
+        callback?.Invoke();
+    }
+
+    public void ReAwake(){
+        base.Awake();
     }
 }

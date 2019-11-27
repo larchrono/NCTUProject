@@ -8,7 +8,6 @@ public class UIManager : MonoBehaviour
     public static UIManager instance;
     public RectTransform WarningLocation;
     public RectTransform WarningCamera;
-    public AR3DLayout AR3DPanel;
 
     private void Awake() {
         instance = this;

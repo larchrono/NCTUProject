@@ -29,7 +29,11 @@ public class SaveScreen : MonoBehaviour
         // Wait for screen rendering to complete
         yield return new WaitForEndOfFrame();
 
-        snapShotHelper.CaptureAndSaveToAlbum();
+        try {
+            snapShotHelper.CaptureAndSaveToAlbum();
+        } catch {
+            UICanvas.enabled = true;
+        }
 
         //Wait for snap callback below
     }

@@ -67,8 +67,13 @@ public class InfoBoxLayout : CanvasGroupExtend
         }
         #endif
 
-        UIManager.instance.AR3DPanel.SetupOldPictureSLAM(currentData.oldPicture);
-        UIManager.instance.AR3DPanel.gameObject.SetActive(true);
+        Open3D.interactable = false;
+        UIARLayout.instance.CVSLAM.SetupOldPictureSLAM(currentData.oldPicture);
+        UIARLayout.instance.StartSLAM();
+        
+        yield return new WaitForSeconds(1);
+
+        Open3D.interactable = true;
     }
 
     public void OpenInfoBoxWithPOI(POIData data){
@@ -102,6 +107,11 @@ public class InfoBoxLayout : CanvasGroupExtend
         // Calculate the distance in km between locations.
         distanceBetweenPOI = OnlineMapsUtils.DistanceBetweenPoints(userCoordinares, markerCoordinates).magnitude * 1000;
 
-        GoadRange.text = "距離 " + distanceBetweenPOI.ToString("#.#") + " m";
+        if(distanceBetweenPOI > 1000)
+            GoadRange.text = string.Format("距離 {0} km", (distanceBetweenPOI / 1000).ToString("0.00"));
+        else
+            GoadRange.text = string.Format("距離 {0} m", distanceBetweenPOI.ToString("0.0"));
+            
+        //GoadRange.text = "距離 " + distanceBetweenPOI.ToString("0.0") + " m";
     }
 }

@@ -163,7 +163,7 @@ PlayerSettings:
     Android: com.ArtPower.NCTUAR
     iOS: com.Artpower.NCTUAR
   buildNumber: {}
-  AndroidBundleVersionCode: 15
+  AndroidBundleVersionCode: 38
   AndroidMinSdkVersion: 16
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
@@ -249,7 +249,7 @@ PlayerSettings:
   clonedFromGUID: c0afd0d1d80e3634a9dac47e8a0426ea
   templatePackageId: com.unity.template.3d@1.3.0
   templateDefaultScene: Assets/Scenes/SampleScene.unity
-  AndroidTargetArchitectures: 3
+  AndroidTargetArchitectures: 1
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
   AndroidKeystoreName: "K:/AR\u7F8E\u8853\u9928/\u4E0A\u67B6\u8CC7\u6599/user.keystore"
@@ -646,7 +646,7 @@ PlayerSettings:
     7: ODIN_INSPECTOR
   platformArchitecture: {}
   scriptingBackend:
-    Android: 1
+    Android: 0
   il2cppCompilerConfiguration: {}
   managedStrippingLevel: {}
   incrementalIl2cppBuild: {}
