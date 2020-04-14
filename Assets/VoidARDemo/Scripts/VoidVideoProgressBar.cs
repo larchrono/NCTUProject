@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System;
 
-public class VideoProgressBar : MonoBehaviour, IDragHandler, IPointerDownHandler
+public class VoidVideoProgressBar : MonoBehaviour, IDragHandler, IPointerDownHandler
 {
     private Image progress;
     public Action<float> onValueChanged;

@@ -22,7 +22,7 @@ public class VideoPlayerController : MonoBehaviour {
         imageTargetBehaviour.AddEventListener(VoidAREvent.FIND, OnFind);
         videoObject = rawImage.gameObject;
         playButton.onClick.AddListener(OnPlayButtonClickHandler);
-        var mVideoProgressBar = progressBar.GetComponent<VideoProgressBar>();
+        var mVideoProgressBar = progressBar.GetComponent<VoidVideoProgressBar>();
         mVideoProgressBar.onValueChanged = OnValueChanged;
         playButton.transform.parent.gameObject.SetActive(false);
 #if UNITY_EDITOR
