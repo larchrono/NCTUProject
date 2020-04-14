@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+#if UNIRX
 using UniRx;
 
 namespace HashTool
@@ -24,3 +26,4 @@ namespace HashTool
         }
     }
 }
+#endif
