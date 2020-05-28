@@ -62,4 +62,12 @@ public class POIData : MonoBehaviour
     private void OnValidate() {
         gameObject.name = string.Format("POI_{0}", POI_Name);
     }
+
+    public void OldPictureSetter(Sprite spt){
+        oldPicture = spt;
+    }
+
+    public void NowPictureSetter(Sprite spt){
+        nowPicture = spt;
+    }
 }

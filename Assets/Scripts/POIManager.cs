@@ -5,6 +5,7 @@ using UnityEngine;
 using Ideafixxxer.CsvParser;
 using Sirenix.OdinInspector;
 using System.Linq;
+using UnityEngine.Networking;
 
 public class POIManager : SoraLib.SingletonMono<POIManager>
 {
@@ -12,19 +13,24 @@ public class POIManager : SoraLib.SingletonMono<POIManager>
     public double defaultMapLon = 120.999091;
     public GameObject POI_Prefab;
     public GameObject SLAM_Prefab;
-    [Space(40)] public TextAsset csvFile;
+    [HideInInspector] public string ImageServerURL = "";
 
-    [Button]
-    public void ImportPOIData(){
-        if(csvFile == null)
-            return;
+    IEnumerator Start()
+    {
+        yield return PingConnect();
+        DownloadManager.GoogleGetCSV(ImportPOIData, OnlineDataManager.instance.webService, OnlineDataManager.instance.sheetID, OnlineDataManager.instance.POI_pageID);
+        DownloadManager.GoogleGetCSV(GetImageServer, OnlineDataManager.instance.webService, OnlineDataManager.instance.sheetID, OnlineDataManager.instance.ImageServer_PageID);
+    }
+
+    public void ImportPOIData(string csvFile)
+    {
 
         //讀入 CSV 檔案，使其分為 string 二維陣列
         CsvParser csvParser = new CsvParser();
-        string[][] csvTable = csvParser.Parse(csvFile.text);
+        string[][] csvTable = csvParser.Parse(csvFile);
 
         var tempList = transform.Cast<Transform>().ToList();
-        foreach(var child in tempList)
+        foreach (var child in tempList)
         {
             DestroyImmediate(child.gameObject);
         }
@@ -55,10 +61,8 @@ public class POIManager : SoraLib.SingletonMono<POIManager>
             data.oldPictureName = fileName_old;
             data.description = description;
 
-            #if UNITY_EDITOR
-            data.nowPicture = SoraLib.FindAssetTool.FindAssetByName<Sprite>(fileName_now);
-            data.oldPicture = SoraLib.FindAssetTool.FindAssetByName<Sprite>(fileName_old);
-            #endif
+            StartCoroutine(DownloadImage(fileName_now, data.NowPictureSetter));
+            StartCoroutine(DownloadImage(fileName_old, data.OldPictureSetter));
 
             poi.transform.parent = transform;
             poi.name = string.Format("POI_{0}", poiName);
@@ -66,8 +70,70 @@ public class POIManager : SoraLib.SingletonMono<POIManager>
         }
     }
 
+    public void GetImageServer(string csvFile)
+    {
+        //讀入 CSV 檔案，使其分為 string 二維陣列
+        CsvParser csvParser = new CsvParser();
+        string[][] csvTable = csvParser.Parse(csvFile);
 
-    public enum CSVIndex {
+        if(csvTable.Length > 0 && csvTable[0].Length > 1){
+            ImageServerURL = csvTable[0][1];
+        }
+
+        Debug.Log($"Use Image URL : {ImageServerURL}");
+    }
+
+    IEnumerator DownloadImage(string fileName, Action<Sprite> callback)
+    {
+        while (string.IsNullOrEmpty(ImageServerURL))
+        {
+            yield return null;
+        }
+        string path = ImageServerURL + fileName + ".jpg";
+        UnityWebRequest request = UnityWebRequestTexture.GetTexture(path);
+        yield return request.SendWebRequest();
+        if (request.isNetworkError || request.isHttpError)
+        {
+            Debug.Log($"{request.error} ({path})");
+        }
+        else
+        {
+            Texture2D webTexture = ((DownloadHandlerTexture)request.downloadHandler).texture;
+            Sprite webSprite = SpriteFromTexture2D(webTexture);
+            callback?.Invoke(webSprite);
+        }
+    }
+
+    Sprite SpriteFromTexture2D(Texture2D texture)
+    {
+        return Sprite.Create(texture, new Rect(0.0f, 0.0f, texture.width, texture.height), new Vector2(0.5f, 0.5f), 100.0f);
+    }
+
+
+    IEnumerator PingConnect()
+    {
+        bool result = false;
+        WaitForSeconds wait = new WaitForSeconds(5);
+        while (!result)
+        {
+            UnityWebRequest request = new UnityWebRequest("http://google.com");
+            yield return request.SendWebRequest();
+            if (request.error != null)
+            {
+                Debug.Log("Have no Internet, retry after 5 seconds...");
+            }
+            else
+            {
+                result = true;
+            }
+            yield return wait;
+        }
+
+        Debug.Log("Network access success.");
+    }
+
+    public enum CSVIndex
+    {
         NAME = 0,
         LAT_USER = 1,
         LON_USER = 2,
@@ -76,5 +142,7 @@ public class POIManager : SoraLib.SingletonMono<POIManager>
         NOW_PIC = 5,
         OLD_PIC = 6,
         DESCRIPTION = 7,
+        MARKER_COLOR = 8,
+        YOUTUBE = 9,
     }
 }

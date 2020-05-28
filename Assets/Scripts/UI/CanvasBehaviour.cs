@@ -9,10 +9,4 @@ public class CanvasBehaviour : CanvasGroupExtend
     {
         CloseSelfImmediate();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

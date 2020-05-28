@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CheckIntenetConnection : MonoBehaviour
+public class CheckIntenetConnection : SoraLib.SingletonMono<CheckIntenetConnection>
 {
+    public bool InternetStats = false;
     private void Start()
     {
         // Begin to check your Internet connection.
@@ -17,6 +18,8 @@ public class CheckIntenetConnection : MonoBehaviour
         OnlineMapsControlBase.instance.allowUserControl = status;
 
         // Showing test result in console.
-        Debug.Log(status ? "Has connection" : "No connection");
+        Debug.Log(status ? "Internet Has connection" : "No Internet connection");
+
+        InternetStats = status;
     }
 }
