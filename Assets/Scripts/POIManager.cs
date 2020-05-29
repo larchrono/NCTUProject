@@ -13,6 +13,7 @@ public class POIManager : SoraLib.SingletonMono<POIManager>
     public double defaultMapLon = 120.999091;
     public GameObject POI_Prefab;
     public GameObject SLAM_Prefab;
+    public List<Sprite> IconPack;
     [HideInInspector] public string ImageServerURL = "";
 
     IEnumerator Start()
@@ -41,6 +42,8 @@ public class POIManager : SoraLib.SingletonMono<POIManager>
             string fileName_now = csvTable[i][(int)CSVIndex.NOW_PIC];
             string fileName_old = csvTable[i][(int)CSVIndex.OLD_PIC];
             string description = csvTable[i][(int)CSVIndex.DESCRIPTION];
+            string m_color = csvTable[i][(int)CSVIndex.MARKER_COLOR];
+            string youtube = csvTable[i][(int)CSVIndex.YOUTUBE];
             double Lat_User, Lon_User, Lat_Goal, Lon_Goal;
             double.TryParse(csvTable[i][(int)CSVIndex.LAT_USER], out Lat_User);
             double.TryParse(csvTable[i][(int)CSVIndex.LON_USER], out Lon_User);
@@ -60,6 +63,8 @@ public class POIManager : SoraLib.SingletonMono<POIManager>
             data.nowPictureName = fileName_now;
             data.oldPictureName = fileName_old;
             data.description = description;
+            data.YoutubeURL = youtube;
+            data.ColorMarker = IconPack.Find((x) => x.name == m_color);
 
             StartCoroutine(DownloadImage(fileName_now, data.NowPictureSetter));
             StartCoroutine(DownloadImage(fileName_old, data.OldPictureSetter));

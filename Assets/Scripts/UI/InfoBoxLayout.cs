@@ -18,6 +18,9 @@ public class InfoBoxLayout : CanvasGroupExtend
     
     //Content Layout
     public ContentHeightController contentHeightController;
+    public RawImage ContentYoutube;
+    public Button BTNPlayYoutube;
+    public Text PlayTip;
     public Image ContentPhoto;
     public Text ContentText;
     public POIData currentData;
@@ -36,6 +39,7 @@ public class InfoBoxLayout : CanvasGroupExtend
     void Start()
     {
         BTNClose.onClick.AddListener(DoCloseWindow);
+        BTNPlayYoutube.onClick.AddListener(DoPlayYoutube);
         Open3D.onClick.AddListener(OnOpenAR);
 
         locationService = OnlineMapsLocationService.instance;
@@ -76,13 +80,32 @@ public class InfoBoxLayout : CanvasGroupExtend
         Open3D.interactable = true;
     }
 
+    void DoPlayYoutube(){
+        if(!YoutubeManager.instance.CanPlay())
+            return;
+
+        ContentPhoto.gameObject.SetActive(false);
+        ContentYoutube.gameObject.SetActive(true);
+        YoutubeManager.instance.Play();
+    }
+
     public void OpenInfoBoxWithPOI(POIData data){
         currentData = data;
 
         Title.text = data.POI_Name;
         MapIcon.sprite = data.ColorMarker == null? MapIcon.sprite : data.ColorMarker;
+        ContentYoutube.gameObject.SetActive(false);
+        ContentPhoto.gameObject.SetActive(true);
         ContentPhoto.sprite = data.nowPicture;
         ContentText.text = data.description;
+
+        if(string.IsNullOrEmpty(data.YoutubeURL)){
+            PlayTip.gameObject.SetActive(false);
+            YoutubeManager.instance.currentURL = string.Empty;
+        } else {
+            PlayTip.gameObject.SetActive(true);
+            YoutubeManager.instance.currentURL = data.YoutubeURL;
+        }
 
         if(locationService != null)
             OnDistanceChange(locationService.position);

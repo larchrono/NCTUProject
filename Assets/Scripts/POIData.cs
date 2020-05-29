@@ -14,6 +14,7 @@ public class POIData : MonoBehaviour
     public Sprite oldPicture;
     public Sprite nowPicture;
     public Sprite ColorMarker;
+    public string YoutubeURL;
     [TextArea(5,20)] public string description;
 
     OnlineMapsMarker3D dynamicMarker;
