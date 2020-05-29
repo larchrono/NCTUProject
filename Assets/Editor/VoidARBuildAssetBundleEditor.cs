@@ -5,7 +5,7 @@ using System.IO;
 public class VoidARBuildAssetBundleEditor : EditorWindow
 {
     bool[] selectPlatforms = new bool[4] { true, true, true ,true};
-    BuildTarget[] buildPlatforms = new BuildTarget[4] { BuildTarget.StandaloneWindows, BuildTarget.StandaloneOSXIntel, BuildTarget.Android, BuildTarget.iOS };
+    BuildTarget[] buildPlatforms = new BuildTarget[4] { BuildTarget.StandaloneWindows, BuildTarget.StandaloneOSX, BuildTarget.Android, BuildTarget.iOS };
     [MenuItem("VoidAR/AssetBundleBuilder")]
     static void Init()
     {

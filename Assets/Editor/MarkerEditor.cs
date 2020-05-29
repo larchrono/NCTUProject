@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using System.IO;
-using System.Collections.Generic;
 using System;
 
 
@@ -15,7 +14,7 @@ public class MarkerEditor : Editor
 
     static MarkerEditor()
     {
-        EditorApplication.playmodeStateChanged += () => {
+        EditorApplication.playModeStateChanged += (x) => {
             if (EditorApplication.isPlayingOrWillChangePlaymode == false && EditorApplication.isPlaying == false)
             {
                 ImageTargetBehaviour[] markers = GameObject.FindObjectsOfType<ImageTargetBehaviour>();
@@ -30,7 +29,7 @@ public class MarkerEditor : Editor
             }
         };
 
-        EditorApplication.hierarchyWindowChanged += () =>
+        EditorApplication.hierarchyChanged += () =>
         {
             ImageTargetBehaviour[] markers = GameObject.FindObjectsOfType<ImageTargetBehaviour>();
             foreach (ImageTargetBehaviour marker in markers)

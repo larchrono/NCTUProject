@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using System.IO;
-using System.Collections.Generic;
 using System;
 
 
@@ -15,7 +14,7 @@ public class ImageExtensionEditor : Editor
 
     static ImageExtensionEditor()
     {
-        EditorApplication.playmodeStateChanged += () => {
+        EditorApplication.playModeStateChanged += (x) => {
             if (EditorApplication.isPlayingOrWillChangePlaymode == false && EditorApplication.isPlaying == false)
             {
                 ImageExtensionBehaviour[] markers = GameObject.FindObjectsOfType<ImageExtensionBehaviour>();
@@ -30,7 +29,7 @@ public class ImageExtensionEditor : Editor
             }
         };
 
-        EditorApplication.hierarchyWindowChanged += () =>
+        EditorApplication.hierarchyChanged += () =>
         {
             ImageExtensionBehaviour[] markers = GameObject.FindObjectsOfType<ImageExtensionBehaviour>();
             foreach (ImageExtensionBehaviour marker in markers)
