@@ -138,3 +138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   renderPicture: {fileID: 6824154591807940400}
+  FadeToAlpha: 0.8
+  FadeDuration: 2
+  TouchingTransparent: 0.5
+  TouchingFadeDuration: 0.5
