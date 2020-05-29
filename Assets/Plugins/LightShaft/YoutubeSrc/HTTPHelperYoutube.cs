@@ -6,6 +6,7 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace YoutubeLight
 {
@@ -123,7 +124,7 @@ namespace YoutubeLight
         public static string UrlDecode(string url)
         {
 
-            return WWW.UnEscapeURL(url);
+            return UnityWebRequest.UnEscapeURL(url);
         }
     }
 }

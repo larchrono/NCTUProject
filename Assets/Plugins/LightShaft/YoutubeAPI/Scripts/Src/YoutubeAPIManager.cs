@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using SimpleJSON;
 using System;
+using UnityEngine.Networking;
 
 public class YoutubeAPIManager : MonoBehaviour {
 
@@ -24,7 +25,7 @@ public class YoutubeAPIManager : MonoBehaviour {
      * 
      * */
 
-    private const string APIKey = "AIzaSyDD-lxGLHsBIFPFPt2i31fc0tAHGeAb8mc";
+    private const string APIKey = "AIzaSyAyctJVli2oEUoXZ8ta_4O0nKyknwXzvaw";
 
     public void GetVideoData(string videoId, Action<YoutubeData> callback)
     {
@@ -79,10 +80,10 @@ public class YoutubeAPIManager : MonoBehaviour {
 
     IEnumerator GetVideosFromChannel(string channelId, int maxResults, Action<YoutubeData[]> callback)
     {
-        WWW call = new WWW("https://www.googleapis.com/youtube/v3/search?order=date&type=video&part=snippet&channelId="+channelId+"&maxResults="+maxResults+"&key="+APIKey);
-        yield return call;
-        Debug.Log(call.url);
-        JSONNode result = JSON.Parse(call.text);
+        UnityWebRequest request = UnityWebRequest.Get("https://www.googleapis.com/youtube/v3/search?order=date&type=video&part=snippet&channelId=" + channelId + "&maxResults=" + maxResults + "&key=" + APIKey);
+        yield return request.SendWebRequest();
+        Debug.Log(request.url);
+        JSONNode result = JSON.Parse(request.downloadHandler.text);
         searchResults = new YoutubeData[result["items"].Count];
         for (int itemsCounter = 0; itemsCounter < searchResults.Length; itemsCounter++)
         {
@@ -95,10 +96,12 @@ public class YoutubeAPIManager : MonoBehaviour {
 
     IEnumerator YoutubeCallPlaylist(string playlistId,int maxResults, Action<YoutubePlaylistItems[]> callback)
     {
-        WWW call = new WWW("https://www.googleapis.com/youtube/v3/playlistItems/?playlistId="+ playlistId + "&maxResults="+maxResults+"&part=snippet%2CcontentDetails&key="+APIKey);
-        yield return call;
-        Debug.Log(call.url);
-        JSONNode result = JSON.Parse(call.text);
+
+        UnityWebRequest request = UnityWebRequest.Get("https://www.googleapis.com/youtube/v3/playlistItems/?playlistId=" + playlistId + "&maxResults=" + maxResults + "&part=snippet%2CcontentDetails&key=" + APIKey);
+        yield return request.SendWebRequest();
+
+        Debug.Log(request.url);
+        JSONNode result = JSON.Parse(request.downloadHandler.text);
         playslistItems = new YoutubePlaylistItems[result["items"].Count];
         for (int itemsCounter = 0; itemsCounter < playslistItems.Length; itemsCounter++)
         {
@@ -111,10 +114,11 @@ public class YoutubeAPIManager : MonoBehaviour {
 
     IEnumerator YoutubeCallComments(string videoId, Action<YoutubeComments[]> callback)
     {
-        WWW call = new WWW("https://www.googleapis.com/youtube/v3/commentThreads/?videoId="+videoId+"&part=snippet%2Creplies&key="+APIKey);
-        yield return call;
-        Debug.Log(call.url);
-        JSONNode result = JSON.Parse(call.text);
+        UnityWebRequest request = UnityWebRequest.Get("https://www.googleapis.com/youtube/v3/commentThreads/?videoId=" + videoId + "&part=snippet%2Creplies&key=" + APIKey);
+        yield return request.SendWebRequest();
+
+        Debug.Log(request.url);
+        JSONNode result = JSON.Parse(request.downloadHandler.text);
         comments = new YoutubeComments[result["items"].Count];
         for (int itemsCounter = 0; itemsCounter < comments.Length; itemsCounter++)
         {
@@ -137,11 +141,11 @@ public class YoutubeAPIManager : MonoBehaviour {
         }
         safeSearchFilter = "&safeSearch=" + safeSearch.ToString();
 
+        UnityWebRequest request = UnityWebRequest.Get("https://www.googleapis.com/youtube/v3/search/?q=" + keyword + "&videoCategoryId=" + category + "&maxResults=" + maxresult + "&type=video&part=snippet,id&key=" + APIKey + "" + orderFilter + "" + safeSearchFilter);
+        yield return request.SendWebRequest();
 
-        WWW call = new WWW("https://www.googleapis.com/youtube/v3/search/?q=" + keyword + "&videoCategoryId=" + category + "&maxResults=" + maxresult + "&type=video&part=snippet,id&key=" + APIKey + "" + orderFilter + "" + safeSearchFilter);
-        yield return call;
-        Debug.Log(call.url);
-        JSONNode result = JSON.Parse(call.text);
+        Debug.Log(request.url);
+        JSONNode result = JSON.Parse(request.downloadHandler.text);
         searchResults = new YoutubeData[result["items"].Count];
         Debug.Log(searchResults.Length);
         for (int itemsCounter = 0; itemsCounter < searchResults.Length; itemsCounter++)
@@ -165,11 +169,11 @@ public class YoutubeAPIManager : MonoBehaviour {
         }
         safeSearchFilter = "&safeSearch=" + safeSearch.ToString();
 
+        UnityWebRequest request = UnityWebRequest.Get("https://www.googleapis.com/youtube/v3/search/?q=" + keyword + "&type=channel&maxResults=" + maxresult + "&part=snippet,id&key=" + APIKey + "" + orderFilter + "" + safeSearchFilter);
+        yield return request.SendWebRequest();
 
-        WWW call = new WWW("https://www.googleapis.com/youtube/v3/search/?q=" + keyword + "&type=channel&maxResults=" + maxresult + "&part=snippet,id&key=" + APIKey + "" + orderFilter + "" + safeSearchFilter);
-        yield return call;
-        Debug.Log(call.url);
-        JSONNode result = JSON.Parse(call.text);
+        Debug.Log(request.url);
+        JSONNode result = JSON.Parse(request.downloadHandler.text);
         channels = new YoutubeChannel[result["items"].Count];
         for (int itemsCounter = 0; itemsCounter < channels.Length; itemsCounter++)
         {
@@ -184,11 +188,14 @@ public class YoutubeAPIManager : MonoBehaviour {
 
     IEnumerator GetTrendingVideos(string regionCode, int maxresult, Action<YoutubeData[]> callback)
     {
-        string newurl = WWW.EscapeURL("https://www.googleapis.com/youtube/v3/videos?part=snippet,id&chart=mostPopular&regionCode=" + regionCode+"&maxResults="+maxresult+"&key="+APIKey);
-        WWW call = new WWW(WWW.UnEscapeURL(newurl));
-        Debug.Log(call.url);
-        yield return call;
-        JSONNode result = JSON.Parse(call.text);
+
+        string newurl = UnityWebRequest.EscapeURL("https://www.googleapis.com/youtube/v3/videos?part=snippet,id&chart=mostPopular&regionCode=" + regionCode+"&maxResults="+maxresult+"&key="+APIKey);
+
+        UnityWebRequest request = UnityWebRequest.Get(UnityWebRequest.UnEscapeURL(newurl));
+        yield return request.SendWebRequest();
+
+        Debug.Log(request.url);
+        JSONNode result = JSON.Parse(request.downloadHandler.text);
         searchResults = new YoutubeData[result["items"].Count];
         Debug.Log(searchResults.Length);
         for (int itemsCounter = 0; itemsCounter < searchResults.Length; itemsCounter++)
@@ -212,12 +219,13 @@ public class YoutubeAPIManager : MonoBehaviour {
         }
         safeSearchFilter = "&safeSearch=" + safeSearch.ToString();
 
-        string newurl = WWW.EscapeURL("https://www.googleapis.com/youtube/v3/search/?q=" + keyword + "&type=video&maxResults=" + maxresult + "&part=snippet,id&key=" + APIKey + "" + orderFilter + "" + safeSearchFilter+""+customFilters);
+        string newurl = UnityWebRequest.EscapeURL("https://www.googleapis.com/youtube/v3/search/?q=" + keyword + "&type=video&maxResults=" + maxresult + "&part=snippet,id&key=" + APIKey + "" + orderFilter + "" + safeSearchFilter+""+customFilters);
         Debug.Log(newurl);
-        WWW call = new WWW(WWW.UnEscapeURL(newurl));
-        yield return call;
-        Debug.Log(call.url);
-        JSONNode result = JSON.Parse(call.text);
+
+        UnityWebRequest request = UnityWebRequest.Get(UnityWebRequest.UnEscapeURL(newurl));
+        yield return request.SendWebRequest();
+        Debug.Log(request.url);
+        JSONNode result = JSON.Parse(request.downloadHandler.text);
         searchResults = new YoutubeData[result["items"].Count];
         Debug.Log(searchResults.Length);
         for (int itemsCounter = 0; itemsCounter < searchResults.Length; itemsCounter++)
@@ -239,10 +247,11 @@ public class YoutubeAPIManager : MonoBehaviour {
             orderFilter = "&order=" + order.ToString();
         }
         safeSearchFilter = "&safeSearch=" + safeSearch.ToString();
-        WWW call = new WWW("https://www.googleapis.com/youtube/v3/search/?type=video&q="+keyword+ "&type=video&locationRadius=" + locationRadius+"mi&location="+latitude+"%2C"+longitude+ "&part=snippet,id&maxResults=" + maxResult+"&key="+APIKey+""+orderFilter+""+safeSearchFilter+""+ customFilters);
-        yield return call;
-        Debug.Log(call.url);
-        JSONNode result = JSON.Parse(call.text);
+
+        UnityWebRequest request = UnityWebRequest.Get("https://www.googleapis.com/youtube/v3/search/?type=video&q=" + keyword + "&type=video&locationRadius=" + locationRadius + "mi&location=" + latitude + "%2C" + longitude + "&part=snippet,id&maxResults=" + maxResult + "&key=" + APIKey + "" + orderFilter + "" + safeSearchFilter + "" + customFilters);
+        yield return request.SendWebRequest();
+        Debug.Log(request.url);
+        JSONNode result = JSON.Parse(request.downloadHandler.text);
         searchResults = new YoutubeData[result["items"].Count];
         Debug.Log(searchResults.Length);
         for(int itemsCounter = 0; itemsCounter < searchResults.Length; itemsCounter++)
@@ -257,11 +266,12 @@ public class YoutubeAPIManager : MonoBehaviour {
 
     IEnumerator LoadSingleVideo(string videoId, Action<YoutubeData> callback)
     {
-        WWW call = new WWW("https://www.googleapis.com/youtube/v3/videos?id=" + videoId + "&part=snippet,id,contentDetails,statistics&key=" + APIKey);
-        yield return call;
-        Debug.Log(call.url);
+
+        UnityWebRequest request = UnityWebRequest.Get("https://www.googleapis.com/youtube/v3/videos?id=" + videoId + "&part=snippet,id,contentDetails,statistics&key=" + APIKey);
+        yield return request.SendWebRequest();
+        Debug.Log(request.url);
         data = new YoutubeData();
-        JSONNode result = JSON.Parse(call.text);
+        JSONNode result = JSON.Parse(request.downloadHandler.text);
         result = result["items"][0];   //using items
         data.id = result["id"];
         //Populate snippet data

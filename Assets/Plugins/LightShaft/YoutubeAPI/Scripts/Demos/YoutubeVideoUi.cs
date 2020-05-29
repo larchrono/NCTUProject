@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 using UnityEngine.Video;
 
@@ -57,10 +58,11 @@ public class YoutubeVideoUi : MonoBehaviour {
 
     IEnumerator DownloadThumb()
     {
-        WWW www = new WWW(thumbUrl);
-        yield return www;
-        Texture2D thumb = new Texture2D(100, 100);
-        www.LoadImageIntoTexture(thumb);
+        UnityWebRequest request = UnityWebRequestTexture.GetTexture(thumbUrl);
+        //request.SetRequestHeader("User-Agent", USER_AGENT);
+        yield return request.SendWebRequest();
+
+        Texture2D thumb = DownloadHandlerTexture.GetContent(request);
         videoThumb.sprite = Sprite.Create(thumb, new Rect(0, 0, thumb.width, thumb.height), new Vector2(0.5f, 0.5f), 100);
     }
 

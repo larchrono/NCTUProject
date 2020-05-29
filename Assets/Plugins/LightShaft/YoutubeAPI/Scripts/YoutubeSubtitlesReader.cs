@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.Video;
 using UnityEngine.UI;
-
+using UnityEngine.Networking;
 
 public class YoutubeSubtitlesReader : MonoBehaviour
 {
@@ -55,10 +55,11 @@ public class YoutubeSubtitlesReader : MonoBehaviour
 
     System.Collections.IEnumerator DownloadSubtitle()
     {
-        WWW url = new WWW("https://www.youtube.com/api/timedtext?lang=" + langCode + "&v=" + videoID + "&fmt=vtt");
-        Debug.Log(url.url);
-        yield return url;
-        subtitleList = ParseStream(url.bytes);
+        UnityWebRequest request = UnityWebRequest.Get("https://www.youtube.com/api/timedtext?lang=" + langCode + "&v=" + videoID + "&fmt=vtt");
+        //request.SetRequestHeader("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:10.0) Gecko/20100101 Firefox/10.0 (Chrome)");
+        Debug.Log(request.url);
+        yield return request.SendWebRequest();
+        subtitleList = ParseStream(request.downloadHandler.data);
         WhenSubtitleLoadAreReady(subtitleList);
     }
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 public class IndividualVideoDataDemo : MonoBehaviour {
@@ -45,10 +46,11 @@ public class IndividualVideoDataDemo : MonoBehaviour {
 
     IEnumerator DownloadThumb(string url)
     {
-        WWW www = new WWW(url);
-        yield return www;
-        Texture2D thumb = new Texture2D(100, 100);
-        www.LoadImageIntoTexture(thumb);
+        UnityWebRequest request = UnityWebRequestTexture.GetTexture(url);
+        //request.SetRequestHeader("User-Agent", USER_AGENT);
+        yield return request.SendWebRequest();
+        
+        Texture2D thumb = DownloadHandlerTexture.GetContent(request);
         UI_thumbnail.sprite = Sprite.Create(thumb, new Rect(0, 0, thumb.width, thumb.height), new Vector2(0.5f, 0.5f), 100);
     }
 }

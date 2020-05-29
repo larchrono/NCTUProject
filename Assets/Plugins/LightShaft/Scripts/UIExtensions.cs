@@ -8,7 +8,7 @@ public static class UISetExtensions
 	private static readonly MethodInfo scrollbarSetMethod;
 
 	private static readonly FieldInfo dropdownValueField;
-	private static readonly MethodInfo dropdownRefreshMethod;  // Unity 5.2 <= only
+	//private static readonly MethodInfo dropdownRefreshMethod;  // Unity 5.2 <= only
 
 	static UISetExtensions()
 	{
@@ -23,7 +23,7 @@ public static class UISetExtensions
 
 		// Find the Dropdown's value field and its' Refresh method
 		dropdownValueField = (typeof (Dropdown)).GetField("m_Value", BindingFlags.NonPublic | BindingFlags.Instance);
-		dropdownRefreshMethod = (typeof (Dropdown)).GetMethod("Refresh", BindingFlags.NonPublic | BindingFlags.Instance);  // Unity 5.2 <= only
+		//dropdownRefreshMethod = (typeof (Dropdown)).GetMethod("Refresh", BindingFlags.NonPublic | BindingFlags.Instance);  // Unity 5.2 <= only
 	}
 
 	public static void Set(this Toggle instance, bool value, bool sendCallback = false)

@@ -130,7 +130,7 @@ public class YoutubePlayer : MonoBehaviour
     [Header("Custom user Events To use with video player only")]
     //User callbacks
     [Tooltip("When the url's are loaded")]
-    public UnityEvent OnYoutubeUrlAreReady;
+    public UrlLoadEvent OnYoutubeUrlAreReady;
     [Tooltip("When the videos are ready to play")]
     public UnityEvent OnVideoReadyToStart;
     [Tooltip("When the video start playing")]
@@ -198,9 +198,9 @@ public class YoutubePlayer : MonoBehaviour
     private bool videoDecryptDone = false;
 
 
-    //Video ready checkers
-    private bool videoPrepared;
-    private bool audioPrepared;
+    //Video ready checkers experimental
+    //private bool videoPrepared;
+    //private bool audioPrepared;
 
     //Retry checker
     private bool isRetry = false;
@@ -251,10 +251,10 @@ public class YoutubePlayer : MonoBehaviour
         if (playUsingInternalDevicePlayer)
             loadYoutubeUrlsOnly = true;
 
-        Invoke("VerifyFrames", 2);
 
         if (!loadYoutubeUrlsOnly)
         {
+            Invoke("VerifyFrames", 2);
             FixCameraEvent();
             Skybox3DSettup();
 
@@ -326,9 +326,11 @@ public class YoutubePlayer : MonoBehaviour
 
     IEnumerator DownloadThumbnail(string videoId)
     {
-        WWW www = new WWW("https://img.youtube.com/vi/" + videoId + "/0.jpg");
-        yield return www;
-        Texture2D thumb = www.texture;
+        UnityWebRequest request = UnityWebRequestTexture.GetTexture("https://img.youtube.com/vi/" + videoId + "/0.jpg");
+        //request.SetRequestHeader("User-Agent", USER_AGENT);
+        yield return request.SendWebRequest();
+
+        Texture2D thumb = DownloadHandlerTexture.GetContent(request);
         videoPlayer.targetMaterialRenderer.material.mainTexture = thumb;
     }
 
@@ -448,7 +450,7 @@ public class YoutubePlayer : MonoBehaviour
 
     void VerifyFrames()
     {
-        if (!playUsingInternalDevicePlayer)
+        if (!playUsingInternalDevicePlayer )
         {
             if (videoPlayer.isPlaying)
             {
@@ -468,33 +470,36 @@ public class YoutubePlayer : MonoBehaviour
 
     void FixedUpdate()
     {
-        //buffering detect 
-        if (videoPlayer.isPlaying && (Time.frameCount % (int)(videoPlayer.frameRate + 1)) == 0)
+        if (!loadYoutubeUrlsOnly)
         {
-            if (lastTimePlayed == videoPlayer.time)//buffering
+            //buffering detect 
+            if (videoPlayer.isPlaying && (Time.frameCount % (int)(videoPlayer.frameRate + 1)) == 0)
             {
-                ShowLoading();
-                Debug.Log("Buffering");
-            }
-            else//not buffering
-            {
-                HideLoading();
-                //Debug.Log("Not buffering");
-            }
-            lastTimePlayed = videoPlayer.time;
-        }
-
-        if (!playUsingInternalDevicePlayer)
-        {
-            if (videoPlayer.isPlaying)
-                HideLoading();
-            else
-            {
-                if (!pauseCalled)
+                if (lastTimePlayed == videoPlayer.time)//buffering
+                {
                     ShowLoading();
+                    Debug.Log("Buffering");
+                }
+                else//not buffering
+                {
+                    HideLoading();
+                    //Debug.Log("Not buffering");
+                }
+                lastTimePlayed = videoPlayer.time;
+            }
+
+            if (!playUsingInternalDevicePlayer)
+            {
+                if (videoPlayer.isPlaying)
+                    HideLoading();
+                else
+                {
+                    if (!pauseCalled)
+                        ShowLoading();
+                }
             }
         }
-            
+        
 
         if (!loadYoutubeUrlsOnly)
         {
@@ -711,7 +716,6 @@ public class YoutubePlayer : MonoBehaviour
     {
         logTest = "Getting URL";
         Stop();
-
         startedPlayingWebgl = false;
         PlayYoutubeVideo(url);
     }
@@ -789,20 +793,22 @@ public class YoutubePlayer : MonoBehaviour
         videoDecryptDone = false;
 
 
-        videoPrepared = false;
-        audioPrepared = false;
+        //videoPrepared = false;
+        //audioPrepared = false;
 
         isRetry = false;
         youtubeUrlReady = false;
 
-        audioPlayer.seekCompleted += AudioSeeked;
+        if(audioPlayer != null)
+            audioPlayer.seekCompleted += AudioSeeked;
         videoPlayer.seekCompleted += VideoSeeked;
         videoPlayer.frameDropped += VideoPlayer_frameDropped;
-        audioPlayer.frameDropped += AudioPlayer_frameDropped;
+        if (audioPlayer != null)
+            audioPlayer.frameDropped += AudioPlayer_frameDropped;
 
-        notSeeking = false;
+        //notSeeking = false;
         waitAudioSeek = false;
-        seekUsingLowQuality = false;
+        //seekUsingLowQuality = false;
     }
 
     public void PlayFromDefaultUrl()
@@ -814,13 +820,11 @@ public class YoutubePlayer : MonoBehaviour
 
     private void PlayYoutubeVideo(string _videoId)
     {
-        
         if (videoQuality == YoutubeVideoQuality.STANDARD)
             lowRes = true;
         else
             lowRes = false;
         ResetThings();
-
         _videoId = CheckVideoUrlAndExtractThevideoId(_videoId);
         if (_videoId == "none")
         {
@@ -973,6 +977,8 @@ public class YoutubePlayer : MonoBehaviour
             string _temporaryAudio = "", _temporaryVideo = "", _tempHtmlPlayerVersion = "";
             videoPlayer.audioOutputMode = VideoAudioOutputMode.None;
             //Get the video with audio first
+
+
             foreach (VideoInfo info in videoInfos)
             {
                 if (info.FormatCode == 18) // SD
@@ -1034,6 +1040,7 @@ public class YoutubePlayer : MonoBehaviour
                     }
                     else
                     {
+                        Debug.Log(info.DownloadUrl);
                         _temporaryVideo = info.DownloadUrl;
                         videoUrl = info.DownloadUrl;
                         videoAreReadyToPlay = true;
@@ -1273,7 +1280,7 @@ public class YoutubePlayer : MonoBehaviour
             startedFromTime = true;
             if (videoQuality == YoutubeVideoQuality.STANDARD)
             {
-                seekUsingLowQuality = true;
+                //seekUsingLowQuality = true;
                 videoPlayer.time = startFromSecondTime;
             }
             else
@@ -1322,10 +1329,10 @@ public class YoutubePlayer : MonoBehaviour
 
     IEnumerator WebRequest(string videoID)
     {
-        WWW request = new WWW(serverURI + "" + videoID + "" + formatURI);
-        yield return request;
+        UnityWebRequest request = UnityWebRequest.Get(serverURI + "" + videoID + "" + formatURI);
+        yield return request.SendWebRequest();
         newRequestResults = new YoutubeResultIds();
-        var requestData = JSON.Parse(request.text);
+        var requestData = JSON.Parse(request.downloadHandler.text);
         var videos = requestData["videos"][0]["formats"];
         newRequestResults.bestFormatWithAudioIncluded = requestData["videos"][0]["url"];
         for (int counter = 0; counter < videos.Count; counter++)
@@ -1508,7 +1515,7 @@ public class YoutubePlayer : MonoBehaviour
                 UrlReadyToUse();
             }
         }
-        OnYoutubeUrlAreReady.Invoke();
+        OnYoutubeUrlAreReady.Invoke(videoUrl);
     }
 
     public void OnYoutubeVideoAreReadyToPlay()
@@ -1716,8 +1723,8 @@ public class YoutubePlayer : MonoBehaviour
             }
         }
     }
-
-    bool seekUsingLowQuality = false;
+    //experimental
+    //bool seekUsingLowQuality = false;
 
     public void Seek(float time)
     {
@@ -1726,7 +1733,7 @@ public class YoutubePlayer : MonoBehaviour
 
         if (videoQuality == YoutubeVideoQuality.STANDARD)
         {
-            seekUsingLowQuality = true;
+            //seekUsingLowQuality = true;
             videoPlayer.time = time;
         }
         else
@@ -1821,22 +1828,25 @@ public class YoutubePlayer : MonoBehaviour
 
     void VideoPreparedSeek(VideoPlayer p)
     {
-        videoPrepared = true;
+        //videoPrepared = true;
     }
 
     void AudioPreparedSeek(VideoPlayer p)
     {
-        audioPrepared = true;
+        //audioPrepared = true;
     }
 
     public void Stop()
     {
         if (!playUsingInternalDevicePlayer)
         {
-            audioPlayer.seekCompleted -= AudioSeeked;
+            if(audioPlayer != null)
+                audioPlayer.seekCompleted -= AudioSeeked;
             videoPlayer.seekCompleted -= VideoSeeked;
+
             videoPlayer.frameDropped -= VideoPlayer_frameDropped;
-            audioPlayer.frameDropped -= AudioPlayer_frameDropped;
+            if (audioPlayer != null)
+                audioPlayer.frameDropped -= AudioPlayer_frameDropped;
 
             videoPlayer.Stop();
             if (!lowRes && audioPlayer != null)
@@ -1943,7 +1953,7 @@ public class YoutubePlayer : MonoBehaviour
         if (videoOnly)
         {
 
-            IDictionary<string, string> videoQuery = HTTPHelperYoutube.ParseQueryString(EncryptUrlForVideo);
+            //IDictionary<string, string> videoQuery = HTTPHelperYoutube.ParseQueryString(EncryptUrlForVideo);
 
             string o = EncryptUrlForVideo;
             o = o.Replace("&sig=", "|");
@@ -1976,8 +1986,8 @@ public class YoutubePlayer : MonoBehaviour
         }
         else
         {
-            IDictionary<string, string> audioQuery = HTTPHelperYoutube.ParseQueryString(EncryptUrlForAudio);
-            IDictionary<string, string> videoQuery = HTTPHelperYoutube.ParseQueryString(EncryptUrlForVideo);
+            //IDictionary<string, string> audioQuery = HTTPHelperYoutube.ParseQueryString(EncryptUrlForAudio);
+            //IDictionary<string, string> videoQuery = HTTPHelperYoutube.ParseQueryString(EncryptUrlForVideo);
 
 
             string o = EncryptUrlForVideo;
@@ -2014,7 +2024,6 @@ public class YoutubePlayer : MonoBehaviour
     private Thread thread1;
     public void ReadyForExtract(string r, bool audioExtract)
     {
-
 
         if (audioExtract)
         {
@@ -2061,7 +2070,7 @@ public class YoutubePlayer : MonoBehaviour
     {
         UnityWebRequest request = UnityWebRequest.Get(uri);
         //request.SetRequestHeader("User-Agent", USER_AGENT);
-        yield return request.Send();
+        yield return request.SendWebRequest();
         //WriteLog("js", request.downloadHandler.text);
         ReadyForExtract(request.downloadHandler.text, audio);
     }
@@ -2071,15 +2080,15 @@ public class YoutubePlayer : MonoBehaviour
     YoutubeResultIds webGlResults;
     IEnumerator WebGlRequest(string videoID)
     {
-        WWW request = new WWW(serverURI + "" + videoID + "" + formatURI);
+        UnityWebRequest request = UnityWebRequest.Get(serverURI + "" + videoID + "" + formatURI);
+        //request.SetRequestHeader("User-Agent", USER_AGENT);
+        yield return request.SendWebRequest();
         startedPlayingWebgl = false;
-        yield return request;
         webGlResults = new YoutubeResultIds();
         Debug.Log(request.url);
-        var requestData = JSON.Parse(request.text);
+        var requestData = JSON.Parse(request.downloadHandler.text);
         var videos = requestData["videos"][0]["formats"];
         webGlResults.bestFormatWithAudioIncluded = requestData["videos"][0]["url"];
-        logTest = "EEDone";
         for (int counter = 0; counter < videos.Count; counter++)
         {
             if (videos[counter]["format_id"] == "160")
@@ -2130,7 +2139,7 @@ public class YoutubePlayer : MonoBehaviour
         videoPlayer.source = VideoSource.Url;
         videoPlayer.url = videoUrl;
         videoPlayer.Prepare();
-        videoPrepared = false;
+        //videoPrepared = false;
         videoPlayer.prepareCompleted += WeblPrepared; ;
     }
 
@@ -2204,7 +2213,7 @@ public class YoutubePlayer : MonoBehaviour
         @"\b[cs]\s*&&\s*[adf]\.set\([^,]+\s*,\s*encodeURIComponent\s*\(\s*([\w$]+)\(",
         @"(\w+)\s*=\s*function\(\s*(\w+)\s*\)\s*{\s*\2\s*=\s*\2\.split\(\""\""\)\s*;(.+)return\s*\2\.join\(\""\""\)\s*}\s*;"
     };
-    private int patternIndex = 0;
+    //private int patternIndex = 0;
 
     public void DoRegexFunctionsForVideo()
     {
@@ -2221,6 +2230,7 @@ public class YoutubePlayer : MonoBehaviour
                 break;
             }
         }
+
 
         if (funcName.Contains("$"))
         {
@@ -2249,9 +2259,27 @@ public class YoutubePlayer : MonoBehaviour
             string reSlice = string.Format(@"{0}:\bfunction\b\([a],b\).(\breturn\b)?.?\w+\.", functionIdentifier); //Regex for slice (return or not)
             string reSwap = string.Format(@"{0}:\bfunction\b\(\w+\,\w\).\bvar\b.\bc=a\b", functionIdentifier); //Regex for the char swap.
 
-            if (Regex.Match(js, reReverse).Success)
+            if(functionIdentifier == "nt")
             {
-                idReverse = functionIdentifier; //If def matched the regex for reverse then the current function is a defined as the reverse
+                string test = @"encodeURIComponent:\bfunction\b\(\w+\)";
+                if(Regex.Match(js, test).Success)
+                {
+                    //if found uri component dont use it igore;
+                }
+                else
+                {
+                    if (Regex.Matches(js, reReverse).Count > 1)
+                    {
+                        idReverse = functionIdentifier; //If def matched the regex for reverse then the current function is a defined as the reverse
+                    }
+                }
+            }
+            else
+            {
+                if (Regex.Match(js, reReverse).Success)
+                {
+                    idReverse = functionIdentifier; //If def matched the regex for reverse then the current function is a defined as the reverse
+                }
             }
 
             if (Regex.Match(js, reSlice).Success)
@@ -2263,7 +2291,9 @@ public class YoutubePlayer : MonoBehaviour
             {
                 idCharSwap = functionIdentifier; //If def matched the regex for charSwap then the current function is defined as swap.
             }
+
         }
+
         foreach (var line in lines.Skip(1).Take(lines.Length - 2))
         {
             Match m;
@@ -2339,6 +2369,7 @@ public class YoutubePlayer : MonoBehaviour
         //Debug.Log(n);
         operations = operations.Trim();
 
+
         if (string.IsNullOrEmpty(operations))
         {
             Debug.Log("Operation is empty for low qual, trying again.");
@@ -2390,7 +2421,7 @@ public class YoutubePlayer : MonoBehaviour
         //string functNamePattern = @"(\w+)\s*=\s*function\(\s*(\w+)\s*\)\s*{\s*\2\s*=\s*\2\.split\(\""\""\)\s*;(.+)return\s*\2\.join\(\""\""\)\s*}\s*;";
 
         //string functNamePattern = @"\b[cs]\s*&&\s*[adf]\.set\([^,]+\s*,\s*encodeURIComponent\s*\(\s*([\w$]+)\(";
-        string functNamePattern = patternNames[patternIndex];
+        //string functNamePattern = patternNames[patternIndex];
 
         var funcName = "";
         foreach (string pat in patternNames)
@@ -2431,9 +2462,27 @@ public class YoutubePlayer : MonoBehaviour
             string reSlice = string.Format(@"{0}:\bfunction\b\([a],b\).(\breturn\b)?.?\w+\.", functionIdentifier); //Regex for slice (return or not)
             string reSwap = string.Format(@"{0}:\bfunction\b\(\w+\,\w\).\bvar\b.\bc=a\b", functionIdentifier); //Regex for the char swap.
 
-            if (Regex.Match(js, reReverse).Success)
+            if (functionIdentifier == "nt")
             {
-                idReverse = functionIdentifier; //If def matched the regex for reverse then the current function is a defined as the reverse
+                string test = @"encodeURIComponent:\bfunction\b\(\w+\)";
+                if (Regex.Match(js, test).Success)
+                {
+                    //if found uri component dont use it igore;
+                }
+                else
+                {
+                    if (Regex.Matches(js, reReverse).Count > 1)
+                    {
+                        idReverse = functionIdentifier; //If def matched the regex for reverse then the current function is a defined as the reverse
+                    }
+                }
+            }
+            else
+            {
+                if (Regex.Match(js, reReverse).Success)
+                {
+                    idReverse = functionIdentifier; //If def matched the regex for reverse then the current function is a defined as the reverse
+                }
             }
 
             if (Regex.Match(js, reSlice).Success)
@@ -2523,9 +2572,10 @@ public class YoutubePlayer : MonoBehaviour
     public IEnumerator WebGlRequest(Action<string> callback, string id, string host)
     {
         Debug.Log(host + "getvideo.php?videoid=" + id + "&type=Download");
-        WWW request = new WWW(host + "getvideo.php?videoid=" + id + "&type=Download");
-        yield return request;
-        callback.Invoke(request.text);
+        UnityWebRequest request = UnityWebRequest.Get(host + "getvideo.php?videoid=" + id + "&type=Download");
+        //request.SetRequestHeader("User-Agent", USER_AGENT);
+        yield return request.SendWebRequest();
+        callback.Invoke(request.downloadHandler.text);
     }
 
     public List<VideoInfo> youtubeVideoInfos;
@@ -2663,6 +2713,17 @@ public class YoutubePlayer : MonoBehaviour
             {
                 ciphers.Add(j["cipher"].ToString());
             }
+        }else if (newJson["streamingData"]["formats"][0]["signatureCipher"] != null)
+        {
+            foreach (var j in newJson["streamingData"]["formats"])
+            {
+                ciphers.Add(j["signatureCipher"].ToString());
+            }
+
+            foreach (var j in newJson["streamingData"]["adaptiveFormats"])
+            {
+                ciphers.Add(j["signatureCipher"].ToString());
+            }
         }
         else
         {
@@ -2689,6 +2750,8 @@ public class YoutubePlayer : MonoBehaviour
                 SignatureQuery = "sig";
             else
                 SignatureQuery = "signatures";
+
+           
 
 
             if (queries.ContainsKey("s") || queries.ContainsKey("signature"))
@@ -2752,7 +2815,7 @@ public class YoutubePlayer : MonoBehaviour
             if (streamMap == null)
             {
                 //Debug.Log("45");
-                string unescaped = Regex.Unescape(json["args"]["player_response"].ToString());
+                //string unescaped = Regex.Unescape(json["args"]["player_response"].ToString());
                 JObject newJson = JObject.Parse(json["args"]["player_response"].ToString());
                 streamMap = newJson["streamingData"]["adaptiveFormats"];
                 //WriteLog("NewJson", newJson.ToString());
@@ -2888,7 +2951,7 @@ public class YoutubePlayer : MonoBehaviour
     {
         UnityWebRequest request = UnityWebRequest.Get(url);
         request.SetRequestHeader("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:10.0) Gecko/20100101 Firefox/10.0 (Chrome)");
-        yield return request.Send();
+        yield return request.SendWebRequest();
         if (request.isNetworkError) { Debug.Log("Youtube UnityWebRequest isNetworkError!"); }
         else if (request.isHttpError) { Debug.Log("Youtube UnityWebRequest isHttpError!"); }
         else if (request.responseCode == 200)
@@ -2907,7 +2970,7 @@ public class YoutubePlayer : MonoBehaviour
         downloadYoutubeUrlResponse = new DownloadUrlResponse();
         UnityWebRequest request = UnityWebRequest.Get(url);
         request.SetRequestHeader("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:10.0) Gecko/20100101 Firefox/10.0 (Chrome)");
-        yield return request.Send();
+        yield return request.SendWebRequest();
         downloadYoutubeUrlResponse.httpCode = request.responseCode;
         if (request.isNetworkError) { Debug.Log("Youtube UnityWebRequest isNetworkError!"); }
         else if (request.isHttpError) { Debug.Log("Youtube UnityWebRequest isHttpError!"); }
@@ -2974,7 +3037,7 @@ public class YoutubePlayer : MonoBehaviour
 
     private void SkipToPercent(float pct)
     {
-        notSeeking = false;
+        //notSeeking = false;
         var frame = videoPlayer.frameCount * pct;
         videoPlayer.Pause();
         if (videoQuality != YoutubeVideoQuality.STANDARD)
@@ -2983,7 +3046,7 @@ public class YoutubePlayer : MonoBehaviour
 
         if (videoQuality == YoutubeVideoQuality.STANDARD)
         {
-            seekUsingLowQuality = true;
+            //seekUsingLowQuality = true;
             videoPlayer.frame = (long)frame;
         }
         else
@@ -2997,12 +3060,12 @@ public class YoutubePlayer : MonoBehaviour
         yield return new WaitForSeconds(1f);
         videoPlayer.time = audioPlayer.time;
     }
-
-    private bool notSeeking = false;
+    //experimental
+    //private bool notSeeking = false;
 
     private void VideoSeeked(VideoPlayer source)
     {
-        notSeeking = true;
+        //notSeeking = true;
         if (!waitAudioSeek)
         {
             if (startedFromTime)
@@ -3032,7 +3095,8 @@ public class YoutubePlayer : MonoBehaviour
         }
     }
 
-    bool ignoreDrop = false;
+    //experimental
+    //bool ignoreDrop = false;
 
     IEnumerator WaitSync()
     {
@@ -3054,8 +3118,8 @@ public class YoutubePlayer : MonoBehaviour
 
         if (!pauseCalled)
         {
-            dropAlreadyCalled = false;
-            ignoreDrop = true;
+            //dropAlreadyCalled = false;
+            //ignoreDrop = true;
             Play();
             StartCoroutine(ReleaseDrop());
         }
@@ -3083,7 +3147,7 @@ public class YoutubePlayer : MonoBehaviour
     IEnumerator ReleaseDrop()
     {
         yield return new WaitForSeconds(2f);
-        ignoreDrop = false;
+        //ignoreDrop = false;
     }
 
     IEnumerator PlayNowFromTime(float time)
@@ -3101,8 +3165,8 @@ public class YoutubePlayer : MonoBehaviour
     }
 
 
-
-    bool dropAlreadyCalled = false;
+    //experimental
+    //bool dropAlreadyCalled = false;
 
     private void AudioPlayer_frameDropped(VideoPlayer source)
     {
@@ -3151,5 +3215,10 @@ public static class Extensions
         var items = listItems.Skip(start).ToList<T>();
         return items.ToArray<T>();
     }
+}
+
+[System.Serializable]
+public class UrlLoadEvent : UnityEvent<string>
+{
 }
 

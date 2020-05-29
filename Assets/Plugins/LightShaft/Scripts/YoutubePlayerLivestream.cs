@@ -57,7 +57,7 @@ public class YoutubePlayerLivestream : MonoBehaviour {
         downloadYoutubeUrlResponse = new DownloadUrlResponse();
         UnityWebRequest request = UnityWebRequest.Get(url);
         request.SetRequestHeader("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:10.0) Gecko/20100101 Firefox/10.0 (Chrome)");
-        yield return request.Send();
+        yield return request.SendWebRequest();
         downloadYoutubeUrlResponse.httpCode = request.responseCode;
         if (request.isNetworkError) { Debug.Log("Youtube UnityWebRequest isNetworkError!"); }
         else if (request.isHttpError) { Debug.Log("Youtube UnityWebRequest isHttpError!"); }

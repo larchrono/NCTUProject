@@ -9,6 +9,7 @@ public class ReactingLights : MonoBehaviour {
 	public Light[] lights;
 	public Color averageColor;
 	private Texture2D tex;
+
 	public enum VideoSide{
 		up,
 		left,

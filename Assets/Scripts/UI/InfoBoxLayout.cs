@@ -51,6 +51,7 @@ public class InfoBoxLayout : CanvasGroupExtend
 
     void DoCloseWindow(){
         CloseSelf();
+        YoutubeManager.instance.Stop();
     }
 
     void OnOpenAR(){

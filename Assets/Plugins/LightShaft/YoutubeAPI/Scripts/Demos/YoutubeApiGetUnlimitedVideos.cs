@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using SimpleJSON;
+using UnityEngine.Networking;
 
 public class YoutubeApiGetUnlimitedVideos : MonoBehaviour {
 
@@ -27,10 +28,13 @@ public class YoutubeApiGetUnlimitedVideos : MonoBehaviour {
             tempMaxResult = 50;
         else
             tempMaxResult = maxResult;
-        string newurl = WWW.EscapeURL("https://www.googleapis.com/youtube/v3/search/?q=" + keyword + "&type=video&maxResults=" + tempMaxResult + "&part=snippet,id&key=" + APIKey + "");
-        WWW call = new WWW(WWW.UnEscapeURL(newurl));
-        yield return call;
-        JSONNode result = JSON.Parse(call.text);
+
+
+        string newurl = UnityWebRequest.EscapeURL("https://www.googleapis.com/youtube/v3/search/?q=" + keyword + "&type=video&maxResults=" + tempMaxResult + "&part=snippet,id&key=" + APIKey + "");
+        UnityWebRequest request = UnityWebRequest.Get(UnityWebRequest.UnEscapeURL(newurl));
+        yield return request.SendWebRequest();
+
+        JSONNode result = JSON.Parse(request.downloadHandler.text);
         currentResults += result["items"].Count;
 
         for (int itemsCounter = 0; itemsCounter < result["items"].Count; itemsCounter++)
@@ -59,10 +63,12 @@ public class YoutubeApiGetUnlimitedVideos : MonoBehaviour {
             tempMaxResult = 50;
         else
             tempMaxResult = maxResult;
-        string newurl = WWW.EscapeURL("https://www.googleapis.com/youtube/v3/search/?pageToken="+pageToken+"&type=video&maxResults=" + tempMaxResult + "&part=snippet,id&key=" + APIKey + "");
-        WWW call = new WWW(WWW.UnEscapeURL(newurl));
-        yield return call;
-        JSONNode result = JSON.Parse(call.text);
+        string newurl = UnityWebRequest.EscapeURL("https://www.googleapis.com/youtube/v3/search/?pageToken="+pageToken+"&type=video&maxResults=" + tempMaxResult + "&part=snippet,id&key=" + APIKey + "");
+
+        UnityWebRequest request = UnityWebRequest.Get(UnityWebRequest.UnEscapeURL(newurl));
+        yield return request.SendWebRequest();
+
+        JSONNode result = JSON.Parse(request.downloadHandler.text);
         currentResults += result["items"].Count;
 
         for (int itemsCounter = 0; itemsCounter < result["items"].Count; itemsCounter++)
