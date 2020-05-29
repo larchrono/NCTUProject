@@ -18,9 +18,12 @@ public class POIManager : SoraLib.SingletonMono<POIManager>
 
     IEnumerator Start()
     {
-        yield return PingConnect();
+        while(CheckIntenetConnection.instance.InternetStats == false){
+            yield return null;
+        }
         DownloadManager.GoogleGetCSV(ImportPOIData, OnlineDataManager.instance.webService, OnlineDataManager.instance.sheetID, OnlineDataManager.instance.POI_pageID);
-        DownloadManager.GoogleGetCSV(GetImageServer, OnlineDataManager.instance.webService, OnlineDataManager.instance.sheetID, OnlineDataManager.instance.ImageServer_PageID);
+        yield return new WaitForSeconds(2.0f);
+        DownloadManager.GoogleGetCSV(GetInfos, OnlineDataManager.instance.webService, OnlineDataManager.instance.sheetID, OnlineDataManager.instance.Infos_PageID);
     }
 
     public void ImportPOIData(string csvFile)
@@ -75,16 +78,26 @@ public class POIManager : SoraLib.SingletonMono<POIManager>
         }
     }
 
-    public void GetImageServer(string csvFile)
-    {
+    public void GetInfos(string csvFile){
         //讀入 CSV 檔案，使其分為 string 二維陣列
         CsvParser csvParser = new CsvParser();
         string[][] csvTable = csvParser.Parse(csvFile);
 
-        if(csvTable.Length > 0 && csvTable[0].Length > 1){
-            ImageServerURL = csvTable[0][1];
+        if(csvTable.Length < 5 && csvTable[0].Length < 2){
+            Debug.LogError("Online info is error format");
+            return;
         }
 
+        string plan_title = csvTable[0][1];
+        string plan_content = csvTable[1][1];
+        string about_title = csvTable[2][1];
+        string about_content = csvTable[3][1];
+        string url = csvTable[4][1];
+
+        AboutPlaneLayout.instance.UpdateAboutMe(plan_title, plan_content);
+        AboutMeLayout.instance.UpdateAboutMe(about_title, about_content);
+
+        ImageServerURL = url;
         Debug.Log($"Use Image URL : {ImageServerURL}");
     }
 

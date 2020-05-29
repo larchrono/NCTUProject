@@ -4,26 +4,13 @@ using Ideafixxxer.CsvParser;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AboutMeLayout : MonoBehaviour
+public class AboutMeLayout : SoraLib.SingletonMono<AboutMeLayout>
 {
     public Text title;
     public Text content;
-    IEnumerator Start(){
-        while(CheckIntenetConnection.instance.InternetStats == false){
-            yield return null;
-        }
 
-        DownloadManager.GoogleGetCSV(UpdateAboutMe, OnlineDataManager.instance.webService, OnlineDataManager.instance.sheetID, OnlineDataManager.instance.AboutMe_PageID);
-    }
-
-    void UpdateAboutMe(string result){
-        //讀入 CSV 檔案，使其分為 string 二維陣列
-        CsvParser csvParser = new CsvParser();
-        string[][] csvTable = csvParser.Parse(result);
-
-        if(csvTable.Length >= 2 && csvTable[0].Length >= 2){
-            title.text = csvTable[0][1];
-            content.text = csvTable[1][1];
-        }
+    public void UpdateAboutMe(string t, string c){
+        title.text = t;
+        content.text = c;
     }
 }
