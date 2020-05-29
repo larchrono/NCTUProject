@@ -163,8 +163,8 @@ PlayerSettings:
     Android: com.ArtPower.NCTUAR
     iOS: com.Artpower.NCTUAR
   buildNumber:
-    iOS: 50
-  AndroidBundleVersionCode: 50
+    iOS: 53
+  AndroidBundleVersionCode: 53
   AndroidMinSdkVersion: 16
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
@@ -253,7 +253,7 @@ PlayerSettings:
   AndroidTargetArchitectures: 1
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: "K:/AR\u7F8E\u8853\u9928/\u4E0A\u67B6\u8CC7\u6599/user.keystore"
+  AndroidKeystoreName: "K:/2019\u5C08\u6848/AR\u7F8E\u8853\u9928/\u4E0A\u67B6\u8CC7\u6599/user.keystore"
   AndroidKeyaliasName: artpower
   AndroidBuildApkPerCpuArchitecture: 0
   AndroidTVCompatibility: 1
