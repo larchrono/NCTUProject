@@ -136,6 +136,7 @@ public class DownloadManager
         if(mRow > 0 && mColumn > 0)
             query += string.Format("&row={0}&column={1}", mRow, mColumn);
 
+        //Debug.Log("try " + query);
         UnityWebRequest www = UnityWebRequest.Get(query);
 
 #if UNITY_2017_2_OR_NEWER

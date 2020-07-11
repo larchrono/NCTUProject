@@ -69,8 +69,10 @@ public class POIManager : SoraLib.SingletonMono<POIManager>
             data.YoutubeURL = youtube;
             data.ColorMarker = IconPack.Find((x) => x.name == m_color);
 
-            StartCoroutine(DownloadImage(fileName_now, data.NowPictureSetter));
-            StartCoroutine(DownloadImage(fileName_old, data.OldPictureSetter));
+            if(!string.IsNullOrEmpty(fileName_now))
+                StartCoroutine(DownloadImage(fileName_now, data.NowPictureSetter));
+            if(!string.IsNullOrEmpty(fileName_old))
+                StartCoroutine(DownloadImage(fileName_old, data.OldPictureSetter));
 
             poi.transform.parent = transform;
             poi.name = string.Format("POI_{0}", poiName);
@@ -88,13 +90,10 @@ public class POIManager : SoraLib.SingletonMono<POIManager>
             return;
         }
 
-        string plan_title = csvTable[0][1];
-        string plan_content = csvTable[1][1];
-        string about_title = csvTable[2][1];
-        string about_content = csvTable[3][1];
-        string url = csvTable[4][1];
+        string about_title = csvTable[0][1];
+        string about_content = csvTable[1][1];
+        string url = csvTable[2][1];
 
-        AboutPlaneLayout.instance.UpdateAboutMe(plan_title, plan_content);
         AboutMeLayout.instance.UpdateAboutMe(about_title, about_content);
 
         ImageServerURL = url;

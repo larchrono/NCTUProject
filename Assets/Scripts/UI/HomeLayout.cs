@@ -5,35 +5,33 @@ using UnityEngine.UI;
 
 public class HomeLayout : CanvasGroupExtend
 {
-    public WorkPanelLayout WorkPanle;
+    public WorkPanelLayout WorkPanel;
 
-    public Button Plan;
     public Button AR;
+    public Button HowTo;
     public Button About;
     
     void Start()
     {
-        Plan.onClick.AddListener(BTNPlan);
         AR.onClick.AddListener(BTNAR);
+        HowTo.onClick.AddListener(BTNHowTo);
         About.onClick.AddListener(BTNAbout);
 
         OpenSelfImmediate();
     }
 
-    void BTNPlan(){
+    void BTNAR(){
         SwitchToWorkPanel(0);
     }
-
-    void BTNAR(){
+    void BTNHowTo(){
         SwitchToWorkPanel(1);
     }
-
     void BTNAbout(){
         SwitchToWorkPanel(2);
     }
 
     void SwitchToWorkPanel(int index){
         CloseSelf();
-        WorkPanle.OpenWorPanel(index);
+        WorkPanel.OpenWorPanel(index);
     }  
 }

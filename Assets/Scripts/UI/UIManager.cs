@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour
     public static UIManager instance;
     public RectTransform WarningLocation;
     public RectTransform WarningCamera;
+    public TipLight tipLight;
 
     private void Awake() {
         instance = this;
