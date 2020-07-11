@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UIPattern
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 0
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: 610123601d2625e42a15e0916ae4d0ce, type: 3}
+    - {fileID: 2800000, guid: b5e6fd034ce52b34dbe476280d960bfd, type: 3}
+    - {fileID: 2800000, guid: a5434d64ab2e0b84795acff7c8cccf21, type: 3}
+    - {fileID: 2800000, guid: 1e01e474759048d4bab4da315c0c53be, type: 3}
+    - {fileID: 2800000, guid: d3cbbe98c0d9d4e49b5e1a3acde26031, type: 3}
+    - {fileID: 2800000, guid: 7e2c3ffa1fac7154d99e078d5f2391f5, type: 3}
+    - {fileID: 2800000, guid: cd6cc85b944f36d4ea7427ab0991ccd0, type: 3}
+    - {fileID: 2800000, guid: e16b5ebee4a40cc4c85d3fbb0c52ffc7, type: 3}
+    - {fileID: 2800000, guid: 6952809fd3366964e9a7985f058ffa0c, type: 3}
+    totalSpriteSurfaceArea: 5471640
+    bindAsDefault: 1
+    storedHash:
+      serializedVersion: 2
+      Hash: 00000000000000000000000000000000
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 610123601d2625e42a15e0916ae4d0ce, type: 3}
+  - {fileID: 21300000, guid: b5e6fd034ce52b34dbe476280d960bfd, type: 3}
+  - {fileID: 21300000, guid: a5434d64ab2e0b84795acff7c8cccf21, type: 3}
+  - {fileID: 21300000, guid: 1e01e474759048d4bab4da315c0c53be, type: 3}
+  - {fileID: 21300000, guid: d3cbbe98c0d9d4e49b5e1a3acde26031, type: 3}
+  - {fileID: 21300000, guid: 7e2c3ffa1fac7154d99e078d5f2391f5, type: 3}
+  - {fileID: 21300000, guid: cd6cc85b944f36d4ea7427ab0991ccd0, type: 3}
+  - {fileID: 21300000, guid: e16b5ebee4a40cc4c85d3fbb0c52ffc7, type: 3}
+  - {fileID: 21300000, guid: 6952809fd3366964e9a7985f058ffa0c, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - UI_Home
+  - UI_Main
+  - HowToUse
+  - UI_P3
+  - UI_Preview
+  - UI_P1
+  - UI_P2
+  - UI_P0
+  - UI_P4
+  m_Tag: UIPattern
+  m_IsVariant: 0

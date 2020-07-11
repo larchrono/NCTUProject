@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UIUX
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 0
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: 4d833f00a6a227544952c90ee7447b1a, type: 3}
+    - {fileID: 2800000, guid: f6295b121fcf1314e9124de173015fa6, type: 3}
+    - {fileID: 2800000, guid: d1dcab92403fe8148b28ebd168fc4812, type: 3}
+    - {fileID: 2800000, guid: e7251ca495cdd2e41aae51b43432de2a, type: 3}
+    - {fileID: 2800000, guid: 16dd2aa5671641840a08d355c8581608, type: 3}
+    - {fileID: 2800000, guid: 44f9dff59cf8d7845b63b8121868d3c4, type: 3}
+    - {fileID: 2800000, guid: f42d22c78c91f1a41b5336c223a6940f, type: 3}
+    - {fileID: 2800000, guid: 77c746f7323c24d43991bdb6fa5229e4, type: 3}
+    - {fileID: 2800000, guid: 1c2e63fa9afc7be49ad9bd4556d935dc, type: 3}
+    - {fileID: 2800000, guid: 0ce1089da9c001341b585ab0d9ea3a85, type: 3}
+    - {fileID: 2800000, guid: 85cf1d4e1e056c64d89b8584c9d03472, type: 3}
+    - {fileID: 2800000, guid: 58036abf6a97c4544bc054cfec704d7f, type: 3}
+    - {fileID: 2800000, guid: 946c089df263d254c9a7f120b4e4acf5, type: 3}
+    - {fileID: 2800000, guid: 7500a8fbd161c4e469c4ffef43100424, type: 3}
+    totalSpriteSurfaceArea: 290218
+    bindAsDefault: 1
+    storedHash:
+      serializedVersion: 2
+      Hash: 00000000000000000000000000000000
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 4d833f00a6a227544952c90ee7447b1a, type: 3}
+  - {fileID: 21300000, guid: f6295b121fcf1314e9124de173015fa6, type: 3}
+  - {fileID: 21300000, guid: d1dcab92403fe8148b28ebd168fc4812, type: 3}
+  - {fileID: 21300000, guid: e7251ca495cdd2e41aae51b43432de2a, type: 3}
+  - {fileID: 21300000, guid: 16dd2aa5671641840a08d355c8581608, type: 3}
+  - {fileID: 21300000, guid: 44f9dff59cf8d7845b63b8121868d3c4, type: 3}
+  - {fileID: 21300000, guid: f42d22c78c91f1a41b5336c223a6940f, type: 3}
+  - {fileID: 21300000, guid: 77c746f7323c24d43991bdb6fa5229e4, type: 3}
+  - {fileID: 21300000, guid: 1c2e63fa9afc7be49ad9bd4556d935dc, type: 3}
+  - {fileID: 21300000, guid: 7500a8fbd161c4e469c4ffef43100424, type: 3}
+  - {fileID: 21300000, guid: 0ce1089da9c001341b585ab0d9ea3a85, type: 3}
+  - {fileID: 21300000, guid: 946c089df263d254c9a7f120b4e4acf5, type: 3}
+  - {fileID: 21300000, guid: 85cf1d4e1e056c64d89b8584c9d03472, type: 3}
+  - {fileID: 21300000, guid: 58036abf6a97c4544bc054cfec704d7f, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - ToHome
+  - UI_About
+  - UI_Create
+  - Steps
+  - UI_OK
+  - UI_Dark
+  - UI_GOAR
+  - UI_Start
+  - UI_Light
+  - X_white
+  - UI_HowTo
+  - X
+  - Tip
+  - UI_HomeOK
+  m_Tag: UIUX
+  m_IsVariant: 0
