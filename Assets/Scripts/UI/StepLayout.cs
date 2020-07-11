@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class StepLayout : CanvasGroupExtend
 {
-    public bool isInitOpen;
+    public WelcomeLayout welcomeLayout;
     public CanvasGroup nextPage;
     public int toLight;
     Button clickPage;
@@ -17,12 +17,7 @@ public class StepLayout : CanvasGroupExtend
     void Start()
     {
         clickPage.onClick.AddListener(PageClick);
-        if(isInitOpen){
-            OpenSelfImmediate();
-        }
-        else {
-            CloseSelfImmediate();
-        }
+        OpenSelfImmediate();
     }
 
     void PageClick(){
@@ -30,7 +25,6 @@ public class StepLayout : CanvasGroupExtend
             return;
             
         UIManager.instance.tipLight.SetLightPosition(toLight);
-        CloseSelfImmediate();
-        OpenPanelImmediate(nextPage);
+        welcomeLayout.ToStep(toLight);
     }
 }

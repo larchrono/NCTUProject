@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class InfoBoxLayout : CanvasGroupExtend
 {
     public static InfoBoxLayout instance;
 
+    public Image AnimTreasure;
+
     //Bubble Layout
+    public Button BTNPanelClose;
     public Button BTNClose;
     public Text Title;
     public Image MapIcon;
@@ -26,6 +30,9 @@ public class InfoBoxLayout : CanvasGroupExtend
     public POIData currentData;
 
     //Public Parameter
+    public float treasureAnimTime = 0.4f;
+    public Ease treasureEase = Ease.OutCirc;
+    public float treasurePunchVal = 10;
     public float MinimunDistanceForLook = 20;
 
     OnlineMapsLocationService locationService;
@@ -38,7 +45,10 @@ public class InfoBoxLayout : CanvasGroupExtend
 
     void Start()
     {
+        AnimTreasure.transform.localScale = new Vector3(0, 0, 0);
+
         BTNClose.onClick.AddListener(DoCloseWindow);
+        BTNPanelClose.onClick.AddListener(DoCloseWindow);
         BTNPlayYoutube.onClick.AddListener(DoPlayYoutube);
         Open3D.onClick.AddListener(OnOpenAR);
 
@@ -118,7 +128,18 @@ public class InfoBoxLayout : CanvasGroupExtend
 
         contentHeightController.ResizeContent();
 
-        OpenSelf();
+        DoTreasureAnim();
+    }
+
+    public void DoTreasureAnim(){
+        AnimTreasure.rectTransform.DOPunchAnchorPos(new Vector2(0, treasurePunchVal), treasureAnimTime);
+        AnimTreasure.transform.DOScale(new Vector3(1, 1, 1), treasureAnimTime).SetEase(treasureEase).OnComplete(()=>{
+            OpenSelf();
+            AnimTreasure.DOFade(0, 0.5f).OnComplete(() => {
+                AnimTreasure.transform.localScale = new Vector3(0, 0, 0);
+                AnimTreasure.DOFade(1, 0);
+            });
+        });
     }
 
     void OnDistanceChange(Vector2 userPoint){

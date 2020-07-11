@@ -11,7 +11,10 @@ public class AboutMeLayout : SoraLib.SingletonMono<AboutMeLayout>
     public TextMeshProUGUI content;
 
     public void UpdateAboutMe(string t, string c){
-        title.text = t;
-        content.text = c;
+        if(!string.IsNullOrEmpty(t))
+            title.text = t;
+            
+        if(!string.IsNullOrEmpty(c))
+            content.text = c;
     }
 }

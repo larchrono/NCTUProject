@@ -163,8 +163,8 @@ PlayerSettings:
     Android: com.ArtPower.NCTUAR
     iOS: com.Artpower.NCTUAR
   buildNumber:
-    iOS: 57
-  AndroidBundleVersionCode: 57
+    iOS: 60
+  AndroidBundleVersionCode: 60
   AndroidMinSdkVersion: 16
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1

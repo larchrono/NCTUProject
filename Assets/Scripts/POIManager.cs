@@ -14,7 +14,7 @@ public class POIManager : SoraLib.SingletonMono<POIManager>
     public GameObject POI_Prefab;
     public GameObject SLAM_Prefab;
     public List<Sprite> IconPack;
-    [HideInInspector] public string ImageServerURL = "";
+    public string ImageServerURL = "";
 
     IEnumerator Start()
     {
@@ -85,7 +85,7 @@ public class POIManager : SoraLib.SingletonMono<POIManager>
         CsvParser csvParser = new CsvParser();
         string[][] csvTable = csvParser.Parse(csvFile);
 
-        if(csvTable.Length < 5 && csvTable[0].Length < 2){
+        if(csvTable.Length == 0 || csvTable[0].Length == 0){
             Debug.LogError("Online info is error format");
             return;
         }
