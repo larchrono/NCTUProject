@@ -82,7 +82,9 @@ public class UserMaker : MonoBehaviour
 
         locationMarker.scale = currentScale / originalScale;
         
-        OnlineMapsLocationService.instance.StartCoroutine(DelayScale());
+        markerSprite.localScale = Vector3.one / (currentScale / originalScale);
+        
+        //OnlineMapsLocationService.instance.StartCoroutine(DelayScale());
     }
 
     private void OnCompassChanged(float f)

@@ -8,9 +8,6 @@ public class MapTool : MonoBehaviour
     public Button AimToMap;
     public Button AimToUser;
 
-    public double defaultLat = 24.788465;
-    public double defaultLon = 120.999091;
-
     void Start(){
         AimToMap.onClick.AddListener(DoAimToMap);
         AimToUser.onClick.AddListener(DoAimToUser);
@@ -86,7 +83,7 @@ public class MapTool : MonoBehaviour
     }
 
     void DoAimToMap(){
-        OnlineMaps.instance.SetPosition(defaultLon, defaultLat);
+        OnlineMaps.instance.SetPosition(POIManager.instance.defaultMapLon, POIManager.instance.defaultMapLat);
     }
 
     void DoAimToUser(){

@@ -14,7 +14,7 @@ public class POIManager : SoraLib.SingletonMono<POIManager>
     public GameObject POI_Prefab;
     public GameObject SLAM_Prefab;
     public List<Sprite> IconPack;
-    public string ImageServerURL = "";
+    string ImageServerURL = "";
 
     IEnumerator Start()
     {
@@ -93,6 +93,25 @@ public class POIManager : SoraLib.SingletonMono<POIManager>
         string about_title = csvTable[0][1];
         string about_content = csvTable[1][1];
         string url = csvTable[2][1];
+        string initPosition = csvTable[3][1];
+
+        try {
+            double lat = 0, lon = 0;
+            if(!string.IsNullOrEmpty(initPosition)){
+                string[] slt = initPosition.Split(',');
+                double.TryParse(slt[0], out lat);
+                double.TryParse(slt[1], out lon);
+
+                defaultMapLat = lat;
+                defaultMapLon = lon;
+
+                OnlineMaps.instance.SetPosition(lon, lat);
+                Debug.Log($"Set map view to {lat}, {lon}");
+            }
+        }
+        catch(Exception e) {
+            Debug.Log(e.Message.ToString());
+        }
 
         AboutMeLayout.instance.UpdateAboutMe(about_title, about_content);
 
@@ -116,7 +135,11 @@ public class POIManager : SoraLib.SingletonMono<POIManager>
         else
         {
             Texture2D webTexture = ((DownloadHandlerTexture)request.downloadHandler).texture;
+            // if(webTexture.width > 640)
+            //     webTexture.Resize(640, (int)((webTexture.height * 1.0f) / webTexture.width * 640));
+
             Sprite webSprite = SpriteFromTexture2D(webTexture);
+            webSprite.name = $"{fileName}.spt";
             callback?.Invoke(webSprite);
         }
     }
