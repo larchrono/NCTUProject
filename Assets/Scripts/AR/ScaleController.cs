@@ -46,7 +46,7 @@ public class ScaleController : MonoBehaviour
             /* We need at least two touches to perform a scaling gesture */
             Touch touch1 = Input.GetTouch(0);
             Touch touch2 = Input.GetTouch(1);
-            Transform hitTransform;
+            //Transform hitTransform;
             RaycastHit[] hit;
 
             /* If we're currently not scaling any augmentation, do a raycast for each touch position to find one. */
