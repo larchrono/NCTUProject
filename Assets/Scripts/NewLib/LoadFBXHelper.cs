@@ -47,7 +47,7 @@ public class LoadFBXHelper : SoraLib.SingletonMono<LoadFBXHelper>
     {
         //Set parent , position, facing
         assetLoaderContext.RootGameObject.transform.parent = ModelParent;
-        assetLoaderContext.RootGameObject.transform.localEulerAngles = new Vector3(0, 180, 0);
+        assetLoaderContext.RootGameObject.transform.localEulerAngles = new Vector3(0, 0, 0);
         assetLoaderContext.RootGameObject.transform.localPosition = Vector3.zero;
 
         var rends = assetLoaderContext.RootGameObject.GetComponentsInChildren<MeshRenderer>();
