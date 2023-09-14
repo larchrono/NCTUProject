@@ -20,11 +20,18 @@ public class UISLAMLayout : MonoBehaviour
     GameObject currentStreetPhoto;
     SaveScreen saveScreen;
 
+    enum DisplayType
+    {
+        TESTING = 0,
+        PICTURE = 1,
+        MODEL = 2,
+    }
+
     float updateIndex = 0;
     float updateDelay = 0.33f;
 
     void CheckAngleAndButton(float angle){
-        if(displayType == 0)
+        if(displayType == (int)DisplayType.TESTING)
         {
             //if(angle > 65 && angle < 75){
             if(angle > 15 && angle < 25){
@@ -35,9 +42,19 @@ public class UISLAMLayout : MonoBehaviour
                 TXTFacingAngle.color = Color.red;
             }
         } 
-        else if(displayType == 1)
+        else if(displayType == (int)DisplayType.PICTURE)
         {
             if(angle < 10 && angle > 0){
+                BTNTracking.interactable = true;
+                TXTFacingAngle.color = Color.green;
+            } else {
+                BTNTracking.interactable = false;
+                TXTFacingAngle.color = Color.red;
+            }
+        }
+        else if(displayType == (int)DisplayType.MODEL)
+        {
+            if(angle < 50 && angle > 10){
                 BTNTracking.interactable = true;
                 TXTFacingAngle.color = Color.green;
             } else {
@@ -58,7 +75,7 @@ public class UISLAMLayout : MonoBehaviour
         }
         updateIndex += Time.deltaTime;
 
-        if(displayType == 1 && currentStreetPhoto != null){
+        if(displayType == (int)DisplayType.PICTURE && currentStreetPhoto != null){
             Vector3 frontVec = (-ARCamera.transform.position).normalized * 2;
             Vector3 photoPos = ARCamera.transform.position + frontVec;
             currentStreetPhoto.transform.position = photoPos;
@@ -96,7 +113,7 @@ public class UISLAMLayout : MonoBehaviour
             Destroy(item.gameObject);
         }
 
-        displayType = 0;
+        displayType = (int)DisplayType.TESTING;
 
         if(obj)
             Instantiate(obj, ArtworkPool);
@@ -108,7 +125,22 @@ public class UISLAMLayout : MonoBehaviour
             Destroy(item.gameObject);
         }
 
-        displayType = 1;
+        displayType = (int)DisplayType.PICTURE;
+
+        if(POIManager.instance.SLAM_Prefab != null) {
+            currentStreetPhoto = Instantiate(POIManager.instance.SLAM_Prefab, ArtworkPool);
+            IsPhoto comp = currentStreetPhoto.GetComponent<IsPhoto>();
+            comp.SetPictureData(photo);
+        }
+    }
+
+    public void SetupModelSLAM(Sprite photo){
+        foreach (Transform item in ArtworkPool)
+        {
+            Destroy(item.gameObject);
+        }
+
+        displayType = (int)DisplayType.MODEL;
 
         if(POIManager.instance.SLAM_Prefab != null) {
             currentStreetPhoto = Instantiate(POIManager.instance.SLAM_Prefab, ArtworkPool);

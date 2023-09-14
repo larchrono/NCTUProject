@@ -85,7 +85,7 @@ public class InfoBoxLayout : CanvasGroupExtend
         #endif
 
         Open3D.interactable = false;
-        UIARLayout.instance.CVSLAM.SetupOldPictureSLAM(currentData.artmodel);
+        UIARLayout.instance.CVSLAM.SetupModelSLAM(currentData.artmodel);
         UIARLayout.instance.StartSLAM();
         
         yield return new WaitForSeconds(1);
