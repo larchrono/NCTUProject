@@ -42,8 +42,10 @@ public class POIManager : SoraLib.SingletonMono<POIManager>
         for (int i = 1; i < csvTable.Length; i++)
         {
             string poiName = csvTable[i][(int)CSVIndex.NAME];
-            string fileName_now = csvTable[i][(int)CSVIndex.NOW_PIC];
-            string fileName_old = csvTable[i][(int)CSVIndex.OLD_PIC];
+            string fileName_preview = csvTable[i][(int)CSVIndex.PREVIEW];
+            string fileName_model = csvTable[i][(int)CSVIndex.MODEL];
+            string artist = csvTable[i][(int)CSVIndex.ARTIST];
+            string format = csvTable[i][(int)CSVIndex.FORMAT];
             string description = csvTable[i][(int)CSVIndex.DESCRIPTION];
             string m_color = csvTable[i][(int)CSVIndex.MARKER_COLOR];
             string youtube = csvTable[i][(int)CSVIndex.YOUTUBE];
@@ -59,20 +61,22 @@ public class POIManager : SoraLib.SingletonMono<POIManager>
             poi.tag = "POI";
             POIData data = poi.AddComponent<POIData>();
             data.POI_Name = poiName;
+            data.artist = artist;
+            data.format = format;
             data.Latitude_User = Lat_User;
             data.Longitude_User = Lon_User;
             data.Latitude_Goal = Lat_Goal;
             data.Longitude_Goal = Lon_Goal;
-            data.nowPictureName = fileName_now;
-            data.oldPictureName = fileName_old;
+            data.previewName = fileName_preview;
+            data.modelName = fileName_model;
             data.description = description;
             data.YoutubeURL = youtube;
             data.ColorMarker = IconPack.Find((x) => x.name == m_color);
 
-            if(!string.IsNullOrEmpty(fileName_now))
-                StartCoroutine(DownloadImage(fileName_now, data.NowPictureSetter));
-            if(!string.IsNullOrEmpty(fileName_old))
-                StartCoroutine(DownloadImage(fileName_old, data.OldPictureSetter));
+            if(!string.IsNullOrEmpty(fileName_preview))
+                StartCoroutine(DownloadImage(fileName_preview, data.ArtPreviewSetter));
+            //if(!string.IsNullOrEmpty(fileName_model))
+            //    StartCoroutine(DownloadImage(fileName_model, data.ModelSetter));
 
             poi.transform.parent = transform;
             poi.name = string.Format("POI_{0}", poiName);
@@ -90,10 +94,10 @@ public class POIManager : SoraLib.SingletonMono<POIManager>
             return;
         }
 
-        string about_title = csvTable[0][1];
-        string about_content = csvTable[1][1];
-        string url = csvTable[2][1];
-        string initPosition = csvTable[3][1];
+        string url = csvTable[0][1];
+        string initPosition = csvTable[1][1];
+        string about_title = csvTable[2][1];
+        string about_content = csvTable[3][1];
 
         try {
             double lat = 0, lon = 0;
@@ -179,10 +183,12 @@ public class POIManager : SoraLib.SingletonMono<POIManager>
         LON_USER = 2,
         LAT_GOAL = 3,
         LON_GOAL = 4,
-        NOW_PIC = 5,
-        OLD_PIC = 6,
-        DESCRIPTION = 7,
-        MARKER_COLOR = 8,
-        YOUTUBE = 9,
+        ARTIST = 5,
+        PREVIEW = 6,
+        MODEL = 7,
+        FORMAT = 8,
+        DESCRIPTION = 9,
+        MARKER_COLOR = 10,
+        YOUTUBE = 11,
     }
 }

@@ -14,6 +14,8 @@ public class InfoBoxLayout : CanvasGroupExtend
     public Button BTNPanelClose;
     public Button BTNClose;
     public Text Title;
+    public Text Artist;
+    public Text Format;
     public Image MapIcon;
     public Text GoadRange;
     public Button Go3D;
@@ -83,7 +85,7 @@ public class InfoBoxLayout : CanvasGroupExtend
         #endif
 
         Open3D.interactable = false;
-        UIARLayout.instance.CVSLAM.SetupOldPictureSLAM(currentData.oldPicture);
+        UIARLayout.instance.CVSLAM.SetupOldPictureSLAM(currentData.artmodel);
         UIARLayout.instance.StartSLAM();
         
         yield return new WaitForSeconds(1);
@@ -104,10 +106,12 @@ public class InfoBoxLayout : CanvasGroupExtend
         currentData = data;
 
         Title.text = data.POI_Name;
+        Artist.text = data.artist;
+        Format.text = data.format;
         MapIcon.sprite = data.ColorMarker == null? MapIcon.sprite : data.ColorMarker;
         ContentYoutube.gameObject.SetActive(false);
         ContentPhoto.gameObject.SetActive(true);
-        ContentPhoto.sprite = data.nowPicture;
+        ContentPhoto.sprite = data.artpreview;
         ContentText.text = data.description;
 
         if(string.IsNullOrEmpty(data.YoutubeURL)){

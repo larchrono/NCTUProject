@@ -5,14 +5,16 @@ using UnityEngine;
 public class POIData : MonoBehaviour
 {
     public string POI_Name;
+    public string artist;
+    public string format;
     public double Latitude_User;
     public double Longitude_User;
     public double Latitude_Goal;
     public double Longitude_Goal;
-    public string oldPictureName;
-    public string nowPictureName;
-    public Sprite oldPicture;
-    public Sprite nowPicture;
+    public string modelName;
+    public string previewName;
+    public Sprite artmodel;
+    public Sprite artpreview;
     public Sprite ColorMarker;
     public string YoutubeURL;
     [TextArea(5,20)] public string description;
@@ -64,11 +66,11 @@ public class POIData : MonoBehaviour
         gameObject.name = string.Format("POI_{0}", POI_Name);
     }
 
-    public void OldPictureSetter(Sprite spt){
-        oldPicture = spt;
+    public void ModelSetter(Sprite spt){
+        //artmodel = spt;
     }
 
-    public void NowPictureSetter(Sprite spt){
-        nowPicture = spt;
+    public void ArtPreviewSetter(Sprite spt){
+        artpreview = spt;
     }
 }

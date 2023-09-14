@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: ArtPower
-  productName: TNNUAsculpture
+  productName: "\u570B\u7ACB\u81FA\u5357\u85DD\u8853\u5927\u5B78\u6821\u5712\u64F4\u589E\u96D5\u5851\u8A08\u756B"
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.9607844, g: 0.9607844, b: 0.9607844, a: 1}
@@ -42,7 +42,7 @@ PlayerSettings:
   m_SplashScreenLogos:
   - logo: {fileID: 10404, guid: 0000000000000000e000000000000000, type: 0}
     duration: 2
-  - logo: {fileID: 21300000, guid: 5ef5743b68fb9874c87210440e30c750, type: 3}
+  - logo: {fileID: 21300000, guid: 832fd98e0b601674fb1d0d6916ad5144, type: 3}
     duration: 2
   m_VirtualRealitySplashScreen: {fileID: 0}
   m_HolographicTrackingLossScreen: {fileID: 0}
@@ -178,13 +178,13 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.ArtPower.NCTUAR
+    Android: com.artpower.tnnuascul2023
     iPhone: com.Artpower.NCTUAR
   buildNumber:
-    iPhone: 73
-  AndroidBundleVersionCode: 73
+    iPhone: 82
+  AndroidBundleVersionCode: 82
   AndroidMinSdkVersion: 24
-  AndroidTargetSdkVersion: 0
+  AndroidTargetSdkVersion: 33
   AndroidPreferredInstallLocation: 1
   aotOptions: 
   stripEngineCode: 0
@@ -261,7 +261,7 @@ PlayerSettings:
   AndroidTargetDevices: 0
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: "K:/2019\u5C08\u6848/AR\u7F8E\u8853\u9928/\u4E0A\u67B6\u8CC7\u6599/user.keystore"
+  AndroidKeystoreName: "G:/K/2019\u5C08\u6848/AR\u7F8E\u8853\u9928/\u4E0A\u67B6\u8CC7\u6599/user.keystore"
   AndroidKeyaliasName: artpower
   AndroidBuildApkPerCpuArchitecture: 0
   AndroidTVCompatibility: 1
@@ -813,7 +813,8 @@ PlayerSettings:
   ps5SharedBinaryContentLabels: []
   ps5SharedBinarySystemFolders: []
   monoEnv: 
-  splashScreenBackgroundSourceLandscape: {fileID: 0}
+  splashScreenBackgroundSourceLandscape: {fileID: 21300000, guid: 02e764e5b8d3d1541a0e6fa750df9fc1,
+    type: 3}
   splashScreenBackgroundSourcePortrait: {fileID: 0}
   blurSplashScreenBackground: 1
   spritePackerPolicy: 
