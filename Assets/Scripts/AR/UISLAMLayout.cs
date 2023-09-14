@@ -15,8 +15,11 @@ public class UISLAMLayout : MonoBehaviour
     public Text TXTDistance;
     public Transform ArtworkPool;
     public GameObject HelpCanvas;
+    public GameObject DownloadingPanel;
+    public TMPro.TextMeshProUGUI progress;
 
     int displayType;
+    WorkFBX currentFBXModel;
     GameObject currentStreetPhoto;
     SaveScreen saveScreen;
 
@@ -54,7 +57,7 @@ public class UISLAMLayout : MonoBehaviour
         }
         else if(displayType == (int)DisplayType.MODEL)
         {
-            if(angle < 50 && angle > 10){
+            if(angle < 50 && angle > -10){
                 BTNTracking.interactable = true;
                 TXTFacingAngle.color = Color.green;
             } else {
@@ -134,7 +137,7 @@ public class UISLAMLayout : MonoBehaviour
         }
     }
 
-    public void SetupModelSLAM(Sprite photo){
+    public void SetupModelSLAM(string fileName, string fullPath){
         foreach (Transform item in ArtworkPool)
         {
             Destroy(item.gameObject);
@@ -143,9 +146,20 @@ public class UISLAMLayout : MonoBehaviour
         displayType = (int)DisplayType.MODEL;
 
         if(POIManager.instance.SLAM_Prefab != null) {
-            currentStreetPhoto = Instantiate(POIManager.instance.SLAM_Prefab, ArtworkPool);
-            IsPhoto comp = currentStreetPhoto.GetComponent<IsPhoto>();
-            comp.SetPictureData(photo);
+            currentFBXModel = Instantiate(POIManager.instance.SLAM_Prefab, ArtworkPool).GetComponent<WorkFBX>();
+        }
+        
+        DownloadingPanel.SetActive(true);
+        if(!string.IsNullOrEmpty(fileName)){
+            DownloadFBXHelper.StartDownloadFBX(fullPath, progress, DownloadCallback);
+        }
+
+        void DownloadCallback(string url){
+            LoadFBXHelper.StartLoadFBX(url, currentFBXModel.transform, progress, LoadCallback);
+        }
+
+        void LoadCallback(){
+            DownloadingPanel.SetActive(false);
         }
     }
 
@@ -159,7 +173,7 @@ public class UISLAMLayout : MonoBehaviour
 
     void DoStartTracking(){
         VoidAR.GetInstance().startMarkerlessTracking();
-        currentStreetPhoto.GetComponent<IsPhoto>().FadeingPicture();
+        currentFBXModel.gameObject.SetActive(true);
     }
 
     void DoDistance(){

@@ -15,20 +15,63 @@ public class POIManager : SoraLib.SingletonMono<POIManager>
     public GameObject SLAM_Prefab;
     public List<Sprite> IconPack;
     string ImageServerURL = "";
+    bool infosUpdateFinished = false;
 
     IEnumerator Start()
     {
         while(CheckIntenetConnection.instance.InternetStats == false){
             yield return null;
         }
-        DownloadManager.GoogleGetCSV(ImportPOIData, OnlineDataManager.instance.webService, OnlineDataManager.instance.sheetID, OnlineDataManager.instance.POI_pageID);
-        yield return new WaitForSeconds(2.0f);
         DownloadManager.GoogleGetCSV(GetInfos, OnlineDataManager.instance.webService, OnlineDataManager.instance.sheetID, OnlineDataManager.instance.Infos_PageID);
+        while(infosUpdateFinished == false){
+            yield return new WaitForSeconds(1.0f);
+        }
+        DownloadManager.GoogleGetCSV(ImportPOIData, OnlineDataManager.instance.webService, OnlineDataManager.instance.sheetID, OnlineDataManager.instance.POI_pageID);
+    }
+
+    public void GetInfos(string csvFile){
+        //讀入 CSV 檔案，使其分為 string 二維陣列
+        CsvParser csvParser = new CsvParser();
+        string[][] csvTable = csvParser.Parse(csvFile);
+
+        if(csvTable.Length == 0 || csvTable[0].Length == 0){
+            Debug.LogError("Online info is error format");
+            return;
+        }
+
+        string url = csvTable[0][1];
+        string initPosition = csvTable[1][1];
+        string about_title = csvTable[2][1];
+        string about_content = csvTable[3][1];
+
+        try {
+            double lat = 0, lon = 0;
+            if(!string.IsNullOrEmpty(initPosition)){
+                string[] slt = initPosition.Split(',');
+                double.TryParse(slt[0], out lat);
+                double.TryParse(slt[1], out lon);
+
+                defaultMapLat = lat;
+                defaultMapLon = lon;
+
+                OnlineMaps.instance.SetPosition(lon, lat);
+                Debug.Log($"Set map view to {lat}, {lon}");
+            }
+        }
+        catch(Exception e) {
+            Debug.Log(e.Message.ToString());
+        }
+
+        AboutMeLayout.instance.UpdateAboutMe(about_title, about_content);
+
+        ImageServerURL = url;
+        Debug.Log($"Use Image URL : {ImageServerURL}");
+
+        infosUpdateFinished = true;
     }
 
     public void ImportPOIData(string csvFile)
     {
-
         //讀入 CSV 檔案，使其分為 string 二維陣列
         CsvParser csvParser = new CsvParser();
         string[][] csvTable = csvParser.Parse(csvFile);
@@ -69,12 +112,15 @@ public class POIManager : SoraLib.SingletonMono<POIManager>
             data.Longitude_Goal = Lon_Goal;
             data.previewName = fileName_preview;
             data.modelName = fileName_model;
+            data.fullModelPath = ImageServerURL + fileName_model + ".fbx";
+
             data.description = description;
             data.YoutubeURL = youtube;
             data.ColorMarker = IconPack.Find((x) => x.name == m_color);
 
             if(!string.IsNullOrEmpty(fileName_preview))
                 StartCoroutine(DownloadImage(fileName_preview, data.ArtPreviewSetter));
+            
             //if(!string.IsNullOrEmpty(fileName_model))
             //    StartCoroutine(DownloadImage(fileName_model, data.ModelSetter));
 
@@ -82,45 +128,6 @@ public class POIManager : SoraLib.SingletonMono<POIManager>
             poi.name = string.Format("POI_{0}", poiName);
 
         }
-    }
-
-    public void GetInfos(string csvFile){
-        //讀入 CSV 檔案，使其分為 string 二維陣列
-        CsvParser csvParser = new CsvParser();
-        string[][] csvTable = csvParser.Parse(csvFile);
-
-        if(csvTable.Length == 0 || csvTable[0].Length == 0){
-            Debug.LogError("Online info is error format");
-            return;
-        }
-
-        string url = csvTable[0][1];
-        string initPosition = csvTable[1][1];
-        string about_title = csvTable[2][1];
-        string about_content = csvTable[3][1];
-
-        try {
-            double lat = 0, lon = 0;
-            if(!string.IsNullOrEmpty(initPosition)){
-                string[] slt = initPosition.Split(',');
-                double.TryParse(slt[0], out lat);
-                double.TryParse(slt[1], out lon);
-
-                defaultMapLat = lat;
-                defaultMapLon = lon;
-
-                OnlineMaps.instance.SetPosition(lon, lat);
-                Debug.Log($"Set map view to {lat}, {lon}");
-            }
-        }
-        catch(Exception e) {
-            Debug.Log(e.Message.ToString());
-        }
-
-        AboutMeLayout.instance.UpdateAboutMe(about_title, about_content);
-
-        ImageServerURL = url;
-        Debug.Log($"Use Image URL : {ImageServerURL}");
     }
 
     IEnumerator DownloadImage(string fileName, Action<Sprite> callback)

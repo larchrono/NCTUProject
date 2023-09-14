@@ -181,8 +181,8 @@ PlayerSettings:
     Android: com.artpower.tnnuascul2023
     iPhone: com.Artpower.NCTUAR
   buildNumber:
-    iPhone: 85
-  AndroidBundleVersionCode: 85
+    iPhone: 87
+  AndroidBundleVersionCode: 87
   AndroidMinSdkVersion: 24
   AndroidTargetSdkVersion: 33
   AndroidPreferredInstallLocation: 1

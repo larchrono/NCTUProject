@@ -13,6 +13,7 @@ public class InfoBoxLayout : CanvasGroupExtend
     //Bubble Layout
     public Button BTNPanelClose;
     public Button BTNClose;
+    public GameObject PreviewTip;
     public Text Title;
     public Text Artist;
     public Text Format;
@@ -85,7 +86,7 @@ public class InfoBoxLayout : CanvasGroupExtend
         #endif
 
         Open3D.interactable = false;
-        UIARLayout.instance.CVSLAM.SetupModelSLAM(currentData.artmodel);
+        UIARLayout.instance.CVSLAM.SetupModelSLAM(currentData.modelName, currentData.fullModelPath);
         UIARLayout.instance.StartSLAM();
         
         yield return new WaitForSeconds(1);
@@ -113,6 +114,11 @@ public class InfoBoxLayout : CanvasGroupExtend
         ContentPhoto.gameObject.SetActive(true);
         ContentPhoto.sprite = data.artpreview;
         ContentText.text = data.description;
+
+        if(ContentPhoto.sprite == null)
+            PreviewTip.SetActive(true);
+        else
+            PreviewTip.SetActive(false);
 
         if(string.IsNullOrEmpty(data.YoutubeURL)){
             PlayTip.gameObject.SetActive(false);

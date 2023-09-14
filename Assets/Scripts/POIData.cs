@@ -12,8 +12,8 @@ public class POIData : MonoBehaviour
     public double Latitude_Goal;
     public double Longitude_Goal;
     public string modelName;
+    public string fullModelPath;
     public string previewName;
-    public Sprite artmodel;
     public Sprite artpreview;
     public Sprite ColorMarker;
     public string YoutubeURL;
