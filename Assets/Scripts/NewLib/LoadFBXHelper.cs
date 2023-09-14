@@ -10,13 +10,13 @@ public class LoadFBXHelper : SoraLib.SingletonMono<LoadFBXHelper>
 {
     public TMPro.TextMeshProUGUI progress;
     public Transform ModelParent;
-    public Action OnFileLoaded;
+    public Action<GameObject> OnFileLoaded;
 
     [Header("設定")]
     
     public UnityEngine.Rendering.ShadowCastingMode shadowMode;
 
-    public static void StartLoadFBX(string url, Transform m_parent, TMPro.TextMeshProUGUI progress, Action callback){
+    public static void StartLoadFBX(string url, Transform m_parent, TMPro.TextMeshProUGUI progress, Action<GameObject> callback){
         instance.progress = progress;
         instance.ModelParent = m_parent;
         instance.OnFileLoaded = callback;
@@ -58,7 +58,7 @@ public class LoadFBXHelper : SoraLib.SingletonMono<LoadFBXHelper>
 
         Debug.Log("Materials loaded. Model fully loaded.");
 
-        OnFileLoaded?.Invoke();
+        OnFileLoaded?.Invoke(assetLoaderContext.RootGameObject);
     }
 
     private void OnLoad(TriLibCore.AssetLoaderContext assetLoaderContext)

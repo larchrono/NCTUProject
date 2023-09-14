@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8477569199961551465}
   - component: {fileID: 5838783944697697855}
   - component: {fileID: 895398474291007173}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: FBXInstance
   m_TagString: ARObject
   m_Icon: {fileID: 0}

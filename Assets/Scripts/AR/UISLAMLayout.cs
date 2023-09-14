@@ -57,7 +57,7 @@ public class UISLAMLayout : MonoBehaviour
         }
         else if(displayType == (int)DisplayType.MODEL)
         {
-            if(angle < 50 && angle > -10){
+            if(angle < 50 && angle > 10){
                 BTNTracking.interactable = true;
                 TXTFacingAngle.color = Color.green;
             } else {
@@ -158,8 +158,14 @@ public class UISLAMLayout : MonoBehaviour
             LoadFBXHelper.StartLoadFBX(url, currentFBXModel.transform, progress, LoadCallback);
         }
 
-        void LoadCallback(){
+        void LoadCallback(GameObject news_obj){
             DownloadingPanel.SetActive(false);
+            int arCamSeeLayer = 10;
+            news_obj.layer = arCamSeeLayer;
+            foreach (Transform child in news_obj.transform)
+            {
+                child.gameObject.layer = arCamSeeLayer;
+            }
         }
     }
 
