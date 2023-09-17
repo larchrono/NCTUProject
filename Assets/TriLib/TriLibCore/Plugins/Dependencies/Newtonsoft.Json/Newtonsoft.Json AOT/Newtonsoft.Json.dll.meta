@@ -26,7 +26,7 @@ PluginImporter:
         Exclude Win: 1
         Exclude Win64: 1
         Exclude WindowsStoreApps: 0
-        Exclude iOS: 0
+        Exclude iOS: 1
         Exclude tvOS: 0
   - first:
       Android: Android
@@ -112,9 +112,10 @@ PluginImporter:
   - first:
       iPhone: iOS
     second:
-      enabled: 1
+      enabled: 0
       settings:
         AddToEmbeddedBinaries: false
+        CPU: AnyCPU
         CompileFlags: 
         FrameworkDependencies: 
   - first:

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine.Experimental;
 using UnityEngine;
+
+#if !UNITY_IOS
 public static class VoidARBridge
 {
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
@@ -18,3 +20,4 @@ public static class VoidARBridge
 #endif
     }
 }
+#endif

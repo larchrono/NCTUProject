@@ -20,6 +20,6 @@ public class ImageTargetBehaviour : ImageTargetBase
             return;
         
         picture.color = new Color(1, 1, 1, 0);
-        picture.DOFade(FadeToAlpha, FadeDuration);
+        //picture.DOFade(FadeToAlpha, FadeDuration);
     }
 }

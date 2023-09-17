@@ -12,7 +12,7 @@ PlayerSettings:
   targetDevice: 0
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: ArtPower
+  companyName: Artpower
   productName: "\u570B\u7ACB\u81FA\u5357\u85DD\u8853\u5927\u5B78\u6821\u5712\u64F4\u589E\u96D5\u5851\u8A08\u756B"
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
@@ -139,7 +139,9 @@ PlayerSettings:
     16:9: 1
     Others: 1
   bundleVersion: 1.0
-  preloadedAssets: []
+  preloadedAssets:
+  - {fileID: 8802982117388149060, guid: c7f8147958712494db00bec26f59bf88, type: 2}
+  - {fileID: 4800000, guid: e7c77f6eaab324a819efdc13b8125a39, type: 3}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -159,13 +161,13 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
     Android: com.artpower.tnnuascul2023
-    iPhone: com.Artpower.NCTUAR
+    iPhone: com.artpower.tnnuascul2023
   buildNumber:
     Standalone: 0
-    iPhone: 93
+    iPhone: 101
     tvOS: 0
   overrideDefaultApplicationIdentifier: 1
-  AndroidBundleVersionCode: 93
+  AndroidBundleVersionCode: 101
   AndroidMinSdkVersion: 24
   AndroidTargetSdkVersion: 33
   AndroidPreferredInstallLocation: 1
@@ -234,7 +236,7 @@ PlayerSettings:
   iOSManualSigningProvisioningProfileType: 0
   tvOSManualSigningProvisioningProfileType: 0
   appleEnableAutomaticSigning: 0
-  iOSRequireARKit: 0
+  iOSRequireARKit: 1
   iOSAutomaticallyDetectAndAddCapabilities: 1
   appleEnableProMotion: 0
   shaderPrecisionModel: 0
@@ -557,7 +559,7 @@ PlayerSettings:
   m_TemplateCustomTags: {}
   mobileMTRendering:
     Android: 0
-    iPhone: 0
+    iPhone: 1
     tvOS: 1
   m_BuildTargetGroupLightmapEncodingQuality: []
   m_BuildTargetGroupLightmapSettings: []
@@ -568,8 +570,8 @@ PlayerSettings:
   enableInternalProfiler: 0
   logObjCUncaughtExceptions: 1
   enableCrashReportAPI: 0
-  cameraUsageDescription: "\u8ACB\u555F\u7528\u76F8\u6A5F\u4F86\u4F7F\u7528AR\u76F8\u95DC\u529F\u80FD"
-  locationUsageDescription: "\u8ACB\u555F\u7528\u5B9A\u4F4D\u8CC7\u8A0A\u4F86\u4F7F\u7528AR\u5C0E\u89BD"
+  cameraUsageDescription: "\u9700\u5141\u8A31\u76F8\u6A5F\u6B0A\u9650\u624D\u80FD\u5920\u4F7F\u7528AR\u529F\u80FD"
+  locationUsageDescription: "\u9700\u5141\u8A31\u4F4D\u7F6E\u6B0A\u9650\u624D\u80FD\u5920\u4F7F\u7528\u5730\u5716\u5C0E\u89BD\u529F\u80FD"
   microphoneUsageDescription: 
   bluetoothUsageDescription: 
   switchNMETAOverride: 
@@ -811,7 +813,8 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
-    4: ODIN_INSPECTOR
+    1: ODIN_INSPECTOR;ODIN_INSPECTOR_3;ODIN_INSPECTOR_3_1
+    4: ODIN_INSPECTOR;ODIN_INSPECTOR_3;ODIN_INSPECTOR_3_1;UNITY_XR_ARKIT_LOADER_ENABLED
     7: ODIN_INSPECTOR;ODIN_INSPECTOR_3;ODIN_INSPECTOR_3_1
   additionalCompilerArguments: {}
   platformArchitecture: {}

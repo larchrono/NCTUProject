@@ -1,0 +1,20 @@
+{
+    "name": "VoidEditor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:2b7d2c12a9dc14c94a39e053a3ce8d46"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [
+        "Editor",
+        "iOS",
+        "macOSStandalone"
+    ],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

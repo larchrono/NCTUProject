@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Collections;
 
+#if !UNITY_IOS
 public class VoidARBehaviour : VoidARBase
 {
     public bool isReady;
@@ -61,3 +62,10 @@ public class VoidARBehaviour : VoidARBase
         base.Awake();
     }
 }
+
+#else
+public class VoidARBehaviour : MonoBehaviour
+{
+    
+}
+#endif
