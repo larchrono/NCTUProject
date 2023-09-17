@@ -15,7 +15,7 @@ public class UISLAMLayout : MonoBehaviour
     public Text TXTDistance;
     public Transform ArtworkPool;
     public GameObject HelpCanvas;
-    public GameObject DownloadingPanel;
+    public CanvasGroup DownloadingPanel;
     public TMPro.TextMeshProUGUI progress;
 
     int displayType;
@@ -34,6 +34,9 @@ public class UISLAMLayout : MonoBehaviour
     float updateDelay = 0.33f;
 
     void CheckAngleAndButton(float angle){
+
+        //only void ar need angel
+        #if !UNITY_IOS
         if(displayType == (int)DisplayType.TESTING)
         {
             //if(angle > 65 && angle < 75){
@@ -65,6 +68,12 @@ public class UISLAMLayout : MonoBehaviour
                 TXTFacingAngle.color = Color.red;
             }
         }
+        #endif
+
+        #if UNITY_EDITOR
+            BTNTracking.interactable = true;
+            TXTFacingAngle.color = Color.green;
+        #endif
     }
 
     void Update(){
@@ -149,23 +158,34 @@ public class UISLAMLayout : MonoBehaviour
             currentFBXModel = Instantiate(POIManager.instance.SLAM_Prefab, ArtworkPool).GetComponent<WorkFBX>();
         }
         
-        DownloadingPanel.SetActive(true);
+        DownloadingPanel.blocksRaycasts = true;
+        DownloadingPanel.alpha = 1;
+        progress.text = "0%";
         if(!string.IsNullOrEmpty(fileName)){
-            DownloadFBXHelper.StartDownloadFBX(fullPath, progress, DownloadCallback);
+            DownloadFBXHelper.StartDownloadFBX(fullPath, progress, DownloadCallback, OnError);
+        } else {
+            OnError();
         }
 
         void DownloadCallback(string url){
-            LoadFBXHelper.StartLoadFBX(url, currentFBXModel.transform, progress, LoadCallback);
+            LoadFBXHelper.StartLoadFBX(url, currentFBXModel.transform, progress, LoadCallback, OnError);
         }
 
         void LoadCallback(GameObject news_obj){
-            DownloadingPanel.SetActive(false);
+            DownloadingPanel.blocksRaycasts = false;
+            DownloadingPanel.alpha = 0;
+
             int arCamSeeLayer = 10;
             news_obj.layer = arCamSeeLayer;
             foreach (Transform child in news_obj.transform)
             {
                 child.gameObject.layer = arCamSeeLayer;
             }
+        }
+
+        void OnError(){
+            DownloadingPanel.blocksRaycasts = false;
+            progress.text = "ERROR";
         }
     }
 
@@ -178,7 +198,13 @@ public class UISLAMLayout : MonoBehaviour
     }
 
     void DoStartTracking(){
+        currentFBXModel.Initialize();
+        
+        #if !UNITY_IOS
         VoidAR.GetInstance().startMarkerlessTracking();
+        #else
+        currentFBXModel.gameObject.transform.position = ARHelper.instance.GetNewARPosition();
+        #endif
         currentFBXModel.gameObject.SetActive(true);
     }
 

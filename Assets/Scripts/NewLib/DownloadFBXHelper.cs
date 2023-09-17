@@ -9,9 +9,11 @@ public class DownloadFBXHelper : SoraLib.SingletonMono<DownloadFBXHelper>
 {
     public TMPro.TextMeshProUGUI progress;
     public Action<string> OnFileDownloaded;
-    public static void StartDownloadFBX(string url, TMPro.TextMeshProUGUI progress, Action<string> callback){
+    public Action OnError;
+    public static void StartDownloadFBX(string url, TMPro.TextMeshProUGUI progress, Action<string> callback, Action onError){
         instance.progress = progress;
         instance.OnFileDownloaded = callback;
+        instance.OnError = onError;
         instance.StartCoroutine(instance.LoadVideoFromThisURL(url));
     }
 
@@ -34,6 +36,7 @@ public class DownloadFBXHelper : SoraLib.SingletonMono<DownloadFBXHelper>
         if (_modelRequest.isDone == false || _modelRequest.error != null)
         {
             Debug.Log ("Request = " + _modelRequest.error );
+            OnError?.Invoke();
         }
 
         Debug.Log ("FBX Download Done - " + _modelRequest.isDone);

@@ -11,15 +11,24 @@ public class LoadFBXHelper : SoraLib.SingletonMono<LoadFBXHelper>
     public TMPro.TextMeshProUGUI progress;
     public Transform ModelParent;
     public Action<GameObject> OnFileLoaded;
+    public Action OnErrorCallback;
 
     [Header("設定")]
     
     public UnityEngine.Rendering.ShadowCastingMode shadowMode;
 
-    public static void StartLoadFBX(string url, Transform m_parent, TMPro.TextMeshProUGUI progress, Action<GameObject> callback){
+
+    #if UNITY_IOS
+    float baseAngel = 180;
+    #else
+    float baseAngel = 0;
+    #endif
+
+    public static void StartLoadFBX(string url, Transform m_parent, TMPro.TextMeshProUGUI progress, Action<GameObject> callback, Action onError){
         instance.progress = progress;
         instance.ModelParent = m_parent;
         instance.OnFileLoaded = callback;
+        instance.OnErrorCallback = onError;
         instance.LoadFBX(url);
     }
 
@@ -35,6 +44,7 @@ public class LoadFBXHelper : SoraLib.SingletonMono<LoadFBXHelper>
     private void OnError(TriLibCore.IContextualizedError obj)
     {
         Debug.LogError($"An error occurred while loading your Model: {obj.GetInnerException()}");
+        OnErrorCallback?.Invoke();
     }
 
     private void OnProgress(TriLibCore.AssetLoaderContext assetLoaderContext, float prog)
@@ -47,7 +57,7 @@ public class LoadFBXHelper : SoraLib.SingletonMono<LoadFBXHelper>
     {
         //Set parent , position, facing
         assetLoaderContext.RootGameObject.transform.parent = ModelParent;
-        assetLoaderContext.RootGameObject.transform.localEulerAngles = new Vector3(0, 0, 0);
+        assetLoaderContext.RootGameObject.transform.localEulerAngles = new Vector3(0, baseAngel, 0);
         assetLoaderContext.RootGameObject.transform.localPosition = Vector3.zero;
 
         var rends = assetLoaderContext.RootGameObject.GetComponentsInChildren<MeshRenderer>();

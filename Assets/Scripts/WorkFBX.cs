@@ -7,12 +7,17 @@ public class WorkFBX : MonoBehaviour
     public float scaleFactor = 1;
     public float scaleFactorIOS = 0.05f;
     public BoxCollider box;
+    bool isInitialized = false;
 
-    void Start()
+    public void Initialize()
     {
         #if UNITY_IOS
         scaleFactor = scaleFactorIOS;
         #endif
+
+        if(isInitialized)
+            return;
+
         transform.GetChild(0).transform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
 
         var mesh = gameObject.GetComponentInChildren<MeshRenderer>();
@@ -28,6 +33,8 @@ public class WorkFBX : MonoBehaviour
 
         box.center = center;
         box.size = size;
+
+        isInitialized = true;
 
         //if(mesh != null)
         //    mesh.gameObject.AddComponent<BoxCollider>();
