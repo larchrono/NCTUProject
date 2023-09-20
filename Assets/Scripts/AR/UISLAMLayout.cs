@@ -36,39 +36,41 @@ public class UISLAMLayout : MonoBehaviour
     void CheckAngleAndButton(float angle){
 
         //only void ar need angel
-        #if !UNITY_IOS
-        if(displayType == (int)DisplayType.TESTING)
+        if (PlatformManager.enableARFundation == EnableARFundation.OFF)
         {
-            //if(angle > 65 && angle < 75){
-            if(angle > 15 && angle < 25){
-                BTNTracking.interactable = true;
-                TXTFacingAngle.color = Color.green;
-            } else {
-                BTNTracking.interactable = false;
-                TXTFacingAngle.color = Color.red;
+            if(displayType == (int)DisplayType.TESTING)
+            {
+                //if(angle > 65 && angle < 75){
+                if(angle > 15 && angle < 25){
+                    BTNTracking.interactable = true;
+                    TXTFacingAngle.color = Color.green;
+                } else {
+                    BTNTracking.interactable = false;
+                    TXTFacingAngle.color = Color.red;
+                }
+            } 
+            else if(displayType == (int)DisplayType.PICTURE)
+            {
+                if(angle < 10 && angle > 0){
+                    BTNTracking.interactable = true;
+                    TXTFacingAngle.color = Color.green;
+                } else {
+                    BTNTracking.interactable = false;
+                    TXTFacingAngle.color = Color.red;
+                }
             }
-        } 
-        else if(displayType == (int)DisplayType.PICTURE)
-        {
-            if(angle < 10 && angle > 0){
-                BTNTracking.interactable = true;
-                TXTFacingAngle.color = Color.green;
-            } else {
-                BTNTracking.interactable = false;
-                TXTFacingAngle.color = Color.red;
+            else if(displayType == (int)DisplayType.MODEL)
+            {
+                if(angle < 50 && angle > 10){
+                    BTNTracking.interactable = true;
+                    TXTFacingAngle.color = Color.green;
+                } else {
+                    BTNTracking.interactable = false;
+                    TXTFacingAngle.color = Color.red;
+                }
             }
         }
-        else if(displayType == (int)DisplayType.MODEL)
-        {
-            if(angle < 50 && angle > 10){
-                BTNTracking.interactable = true;
-                TXTFacingAngle.color = Color.green;
-            } else {
-                BTNTracking.interactable = false;
-                TXTFacingAngle.color = Color.red;
-            }
-        }
-        #endif
+        
 
         #if UNITY_EDITOR
             BTNTracking.interactable = true;
@@ -200,11 +202,11 @@ public class UISLAMLayout : MonoBehaviour
     void DoStartTracking(){
         currentFBXModel.Initialize();
         
-        #if !UNITY_IOS
-        VoidAR.GetInstance().startMarkerlessTracking();
-        #else
-        currentFBXModel.gameObject.transform.position = ARHelper.instance.GetNewARPosition();
-        #endif
+        if (PlatformManager.enableARFundation == EnableARFundation.ON){
+            currentFBXModel.gameObject.transform.position = ARHelper.instance.GetNewARPosition();
+        } else {
+            VoidAR.GetInstance().startMarkerlessTracking();
+        }
         currentFBXModel.gameObject.SetActive(true);
     }
 

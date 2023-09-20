@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-#if UNITY_IOS
+#if UNITY_IOS || UNITY_ANDROID
 
 public class UIARLayout : MonoBehaviour
 {

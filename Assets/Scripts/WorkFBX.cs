@@ -11,9 +11,9 @@ public class WorkFBX : MonoBehaviour
 
     public void Initialize()
     {
-        #if UNITY_IOS
-        scaleFactor = scaleFactorIOS;
-        #endif
+        if(PlatformManager.enableARFundation == EnableARFundation.ON){
+            scaleFactor = scaleFactorIOS;
+        }
 
         if(isInitialized)
             return;

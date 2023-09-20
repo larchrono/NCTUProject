@@ -8,10 +8,8 @@ public class UseARFundation : MonoBehaviour
     public GameObject ARKitCAM;
     void Start()
     {
-        #if !UNITY_IOS
+        if(PlatformManager.enableARFundation == EnableARFundation.OFF){
             ARKitCAM.SetActive(false);
-        #else
-
-        #endif
+        }
     }
 }
