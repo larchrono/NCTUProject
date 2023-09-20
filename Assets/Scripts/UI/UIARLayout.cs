@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-#if UNITY_IOS || UNITY_ANDROID
+#if UNITY_IOS
 
 public class UIARLayout : MonoBehaviour
 {
+    public string tip = "修改此處變數來切換VOIDAR或ARCORE";
     public static UIARLayout instance;
     public UIImageLayout CVAR;
     public UISLAMLayout CVSLAM;
@@ -86,6 +87,7 @@ public class UIARLayout : MonoBehaviour
 [RequireComponent(typeof(Camera))]
 public class UIARLayout : MonoBehaviour
 {
+    public string tip = "修改此處變數來切換VOIDAR或ARCORE";
     public static UIARLayout instance;
     public UIImageLayout CVAR;
     public UISLAMLayout CVSLAM;

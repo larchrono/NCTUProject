@@ -764,10 +764,10 @@ RectTransform:
   m_Father: {fileID: 1318545589}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 460, y: -2573.72}
+  m_SizeDelta: {x: 920, y: 205}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &69154923
 MonoBehaviour:
@@ -1584,10 +1584,10 @@ RectTransform:
   m_Father: {fileID: 1318545589}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -250.01001}
+  m_SizeDelta: {x: 920, y: 2161.21}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &225503328
 MonoBehaviour:
@@ -15244,6 +15244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 106e215d62ecc6544a1a5d70c1717d1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tip: "\u4FEE\u6539\u6B64\u8655\u8B8A\u6578\u4F86\u5207\u63DBVOIDAR\u6216ARCORE"
 --- !u!1 &2024539413
 GameObject:
   m_ObjectHideFlags: 0
@@ -15471,10 +15472,10 @@ RectTransform:
   m_Father: {fileID: 1318545589}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -70}
+  m_SizeDelta: {x: 920, y: 120.01}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2071159632
 MonoBehaviour:
@@ -16689,6 +16690,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7c3785e8ab2f884684fd10adf06fe07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  markerType: 1
+  shapeMatchAccuracy: 5
+  is_use_cloud: 0
+  accessKey: 
+  secretKey: 
+  appKey: 
+  privateCloud: 0
+  cloudURL: 
+  tracking: 1
+  simultaneousTrackingMax: 1
+  markerlessParent: {fileID: 1465645769207909614}
+  isMirror: 0
+  useAREnvironmentProbe: 0
+  sceneScale: 1
+  CameraIndex: 0
+  isReady: 0
 --- !u!20 &1465645768475678692
 Camera:
   m_ObjectHideFlags: 0
@@ -16785,6 +16802,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27bdb8b8ec89e7f4094b93a0230f0d35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tip: "\u4FEE\u6539\u6B64\u8655\u8B8A\u6578\u4F86\u5207\u63DBVOIDAR\u6216ARCORE"
   CVAR: {fileID: 305386423}
   CVSLAM: {fileID: 1465645768155880122}
   ImageTarget: {fileID: 0}

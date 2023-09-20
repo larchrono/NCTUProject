@@ -139,9 +139,7 @@ PlayerSettings:
     16:9: 1
     Others: 1
   bundleVersion: 1.1
-  preloadedAssets:
-  - {fileID: 5373580691503669131, guid: c7f8147958712494db00bec26f59bf88, type: 2}
-  - {fileID: 4800000, guid: c9f956787b1d945e7b36e0516201fc76, type: 3}
+  preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -164,10 +162,10 @@ PlayerSettings:
     iPhone: com.artpower.tnnuascul2023
   buildNumber:
     Standalone: 0
-    iPhone: 122
+    iPhone: 127
     tvOS: 0
   overrideDefaultApplicationIdentifier: 1
-  AndroidBundleVersionCode: 122
+  AndroidBundleVersionCode: 127
   AndroidMinSdkVersion: 24
   AndroidTargetSdkVersion: 33
   AndroidPreferredInstallLocation: 1
