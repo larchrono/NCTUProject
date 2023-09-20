@@ -82,7 +82,7 @@ public class UIARLayout : MonoBehaviour
 
 #else
 
-[RequireComponent(typeof(VoidARBehaviour))]
+//[RequireComponent(typeof(VoidARBehaviour))]
 [RequireComponent(typeof(Camera))]
 public class UIARLayout : MonoBehaviour
 {
@@ -90,10 +90,12 @@ public class UIARLayout : MonoBehaviour
     public UIImageLayout CVAR;
     public UISLAMLayout CVSLAM;
     public GameObject ImageTarget;
+    public Camera ARKitCamera;
+    public Transform TrackerSlam;
     
     Camera compCamera;
     VoidARBehaviour compAR;
-    Transform TrackerSlam;
+    
     
     void Awake(){
         if(instance == null)
@@ -101,7 +103,7 @@ public class UIARLayout : MonoBehaviour
             
         compCamera = GetComponent<Camera>();
         compAR = GetComponent<VoidARBehaviour>();
-        TrackerSlam = compAR.markerlessParent.transform;
+        //TrackerSlam = compAR.markerlessParent.transform;
     }
 
     void Start(){
