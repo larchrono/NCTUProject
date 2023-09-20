@@ -21,7 +21,7 @@ public class UIARLayout : MonoBehaviour
             instance = this;
             
         compCamera = GetComponent<Camera>();
-        compCamera.enabled = false;
+        if(compCamera) compCamera.enabled = false;
     }
 
     void Start(){

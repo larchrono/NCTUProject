@@ -18,6 +18,16 @@ public class RequirePermissions : MonoBehaviour
     }
 
     IEnumerator Start(){
+        yield return new WaitForSeconds(5);
+        if(!UnityEngine.Android.Permission.HasUserAuthorizedPermission(UnityEngine.Android.Permission.ExternalStorageWrite)){
+            UnityEngine.Android.Permission.RequestUserPermission(UnityEngine.Android.Permission.ExternalStorageWrite);
+        }
+        if (!UnityEngine.Android.Permission.HasUserAuthorizedPermission(UnityEngine.Android.Permission.Camera)) {
+            UnityEngine.Android.Permission.RequestUserPermission(UnityEngine.Android.Permission.Camera);
+        }
+    }
+
+    IEnumerator Start2(){
         #if UNITY_2018_3_OR_NEWER && UNITY_ANDROID
         /* Since 2018.3, Unity doesn't automatically handle permissions on Android, so as soon as
          * the menu is displayed, ask for camera permissions. */
